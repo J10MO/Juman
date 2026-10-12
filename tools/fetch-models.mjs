@@ -18,6 +18,8 @@ const OUT = path.join(ROOT, 'client', 'public', 'models')
 const TMP = path.join(ROOT, 'tools', '.cache')
 const META = path.join(ROOT, 'server', 'src', 'db', 'realProducts.generated.json')
 const force = process.argv.includes('--force')
+// --only=slug,slug  re-processes just those models
+const only = (process.argv.find((a) => a.startsWith('--only=')) || '').slice(7).split(',').filter(Boolean)
 
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS)
 
@@ -41,7 +43,7 @@ async function download(url, dest) {
 async function processOne(p, meta) {
   const glbPath = path.join(OUT, `${p.slug}.glb`)
   const imgPath = path.join(OUT, `${p.slug}.webp`)
-  if (!force && meta[p.slug] && (await exists(glbPath)) && (await exists(imgPath))) return 'cached'
+  if (!force && !only.includes(p.slug) && meta[p.slug] && (await exists(glbPath)) && (await exists(imgPath))) return 'cached'
 
   const [info, files] = await Promise.all([
     fetch(`https://api.polyhaven.com/info/${p.ph}`).then((r) => r.json()),
@@ -57,6 +59,17 @@ async function processOne(p, meta) {
   await Promise.all(Object.entries(gltf.include || {}).map(([rel, f]) => download(f.url, path.join(dir, rel))))
 
   const doc = await io.read(main)
+  if (p.yaw) {
+    // Some scans face sideways; turn them so their front faces +z like every other model.
+    const scene = doc.getRoot().getDefaultScene() || doc.getRoot().listScenes()[0]
+    const a = (p.yaw * Math.PI) / 180
+    const pivot = doc.createNode('yaw').setRotation([0, Math.sin(a / 2), 0, Math.cos(a / 2)])
+    for (const child of scene.listChildren()) {
+      scene.removeChild(child)
+      pivot.addChild(child)
+    }
+    scene.addChild(pivot)
+  }
   await doc.transform(
     dedup(),
     prune(),
@@ -87,6 +100,7 @@ async function processOne(p, meta) {
 const meta = (await exists(META)) ? JSON.parse(await readFile(META, 'utf8')) : {}
 let failed = 0
 for (const p of realProducts) {
+  if (only.length && !only.includes(p.slug)) continue
   try {
     const status = await processOne(p, meta)
     const d = meta[p.slug].dims

@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import { Footer, Navbar } from './components/Navbar.jsx'
+import { Footer, MobileTabs, Navbar } from './components/Navbar.jsx'
 import { Loading } from './components/States.jsx'
 import { useAuth } from './lib/auth.jsx'
 import Home from './pages/Home.jsx'
@@ -64,6 +64,7 @@ export default function App() {
         </Suspense>
       </main>
       {!isStudio && <Footer />}
+      <MobileTabs />
     </>
   )
 }

@@ -54,10 +54,16 @@ export function ProductCard({ product }) {
       <div className="card-media">
         <ModelThumb product={product} color={color} />
         {product.featured && <span className="card-badge">الأكثر طلب</span>}
-        {product.modelUrl && <span className="card-badge scan-badge">مسح حقيقي 3D</span>}
+        {product.modelUrl && <span className="card-badge scan-badge">حقيقي 3D</span>}
+        <span className="card-peek">
+          <Icon name="cube" size={14} /> شوفها 3D
+        </span>
       </div>
       <div className="card-body">
-        <span className="card-cat">{product.categoryName}</span>
+        <span className="card-cat">
+          {product.categoryName}
+          {product.material && <> · {product.material}</>}
+        </span>
         <h3 className="card-title">{product.name}</h3>
         <div className="card-foot">
           <span className="price">{formatPrice(product.price)}</span>

@@ -18,6 +18,13 @@ const STEPS = [
   { icon: 'truck', title: 'احفظ واطلب', text: 'احفظ تصميمك وشوف الحساب الكلي. نوصلّك الطلب لباب البيت، وننصبه إلك ببلاش ببغداد.' },
 ]
 
+const TRUST = [
+  { icon: 'truck2', title: 'توصيل لكل العراق', text: '١٨ محافظة، ومجاني ببغداد' },
+  { icon: 'cash', title: 'الدفع عند الاستلام', text: 'ما تدفع إلا من تشوف القطعة' },
+  { icon: 'shield', title: 'ضمان سنتين', text: 'على كل الموبيليا' },
+  { icon: 'tools', title: 'نصب ببلاش', text: 'فريقنا يركّب كل شي إلك' },
+]
+
 const QUOTES = [
   { name: 'أم علي — المنصور', text: 'والله ما چنت أعرف شلون تطلع القنفة بالصالة، صممتها هنا وطلعت نفس الشي بالضبط. تسلم إيدكم!' },
   { name: 'حيدر — البصرة', text: 'خوش فكرة! رتبت غرفة النوم كلها قبل لا أشتري، ووفرت على نفسي هواية دوخة راس.' },
@@ -95,6 +102,12 @@ function PlanCards() {
 export default function Home() {
   const featured = useApi('/products?featured=1')
   const scanned = useApi('/products?source=scan')
+  // one real photo per category for the category cards
+  const catImage = {}
+  for (const p of scanned.data?.products || []) {
+    if (!catImage[p.categorySlug] && p.kind !== 'small') catImage[p.categorySlug] = p.imageUrl
+  }
+  catImage.kitchen ??= (scanned.data?.products || []).find((p) => p.categorySlug === 'kitchen')?.imageUrl
   const cats = useApi('/categories')
 
   return (
@@ -150,6 +163,22 @@ export default function Home() {
         </div>
       </section>
 
+      <div className="container">
+        <ul className="trust">
+          {TRUST.map((t) => (
+            <li key={t.title}>
+              <span className="trust-icon">
+                <Icon name={t.icon} size={22} />
+              </span>
+              <div>
+                <strong>{t.title}</strong>
+                <span>{t.text}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       <section className="section">
         <div className="container">
           <div className="section-head">
@@ -189,7 +218,7 @@ export default function Home() {
           {featured.error && <ErrorState error={featured.error} onRetry={featured.reload} />}
           {featured.data && (
             <div className="grid">
-              {featured.data.products.map((p) => (
+              {featured.data.products.slice(0, 8).map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}
             </div>
@@ -253,7 +282,8 @@ export default function Home() {
                     <h3>{c.name}</h3>
                     <p>{c.blurb}</p>
                   </div>
-                  <span style={{ fontSize: '0.85rem' }}>{formatNumber(c.productCount)} قطعة ←</span>
+                  {catImage[c.slug] && <img className="cat-img" src={catImage[c.slug]} alt="" loading="lazy" />}
+                  <span className="cat-count">{formatNumber(c.productCount)} قطعة ←</span>
                 </Link>
               ))}
             </div>

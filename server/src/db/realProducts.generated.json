@@ -411,8 +411,8 @@
   },
   "stone-coffee-table": {
     "dims": {
-      "w": 0.6,
-      "d": 1.202,
+      "w": 1.202,
+      "d": 0.6,
       "h": 0.39
     },
     "credit": "Amin",
@@ -427,6 +427,496 @@
     },
     "credit": "Aron Łyczek",
     "source": "https://polyhaven.com/a/dining_table",
+    "license": "CC0"
+  },
+  "classic-console": {
+    "dims": {
+      "w": 1.543,
+      "d": 0.589,
+      "h": 0.949
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/ClassicConsole_01",
+    "license": "CC0"
+  },
+  "carved-square-table": {
+    "dims": {
+      "w": 1.443,
+      "d": 1.443,
+      "h": 0.559
+    },
+    "credit": "Ulan Cabanilla",
+    "source": "https://polyhaven.com/a/gothic_coffee_table",
+    "license": "CC0"
+  },
+  "steel-wood-table": {
+    "dims": {
+      "w": 0.778,
+      "d": 0.758,
+      "h": 0.638
+    },
+    "credit": "Ulan Cabanilla",
+    "source": "https://polyhaven.com/a/industrial_coffee_table",
+    "license": "CC0"
+  },
+  "carved-screen": {
+    "dims": {
+      "w": 1.294,
+      "d": 0.377,
+      "h": 1.603
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/chinese_screen_panels",
+    "license": "CC0"
+  },
+  "throne-chair": {
+    "dims": {
+      "w": 0.848,
+      "d": 0.789,
+      "h": 1.587
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/chinese_armchair",
+    "license": "CC0"
+  },
+  "floor-cushions": {
+    "dims": {
+      "w": 0.94,
+      "d": 0.452,
+      "h": 0.45
+    },
+    "credit": "Serhii Khromov",
+    "source": "https://polyhaven.com/a/throw_pillows_01",
+    "license": "CC0"
+  },
+  "bride-chest": {
+    "dims": {
+      "w": 0.959,
+      "d": 0.523,
+      "h": 0.619
+    },
+    "credit": "Rico Cilliers",
+    "source": "https://polyhaven.com/a/treasure_chest",
+    "license": "CC0"
+  },
+  "vintage-suitcase": {
+    "dims": {
+      "w": 1.608,
+      "d": 0.239,
+      "h": 0.568
+    },
+    "credit": "Maximilian Schuster",
+    "source": "https://polyhaven.com/a/vintage_suitcase",
+    "license": "CC0"
+  },
+  "classic-nightstand": {
+    "dims": {
+      "w": 0.568,
+      "d": 0.424,
+      "h": 0.7
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/ClassicNightstand_01",
+    "license": "CC0"
+  },
+  "carved-commode": {
+    "dims": {
+      "w": 1.201,
+      "d": 0.581,
+      "h": 1.212
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/GothicCommode_01",
+    "license": "CC0"
+  },
+  "painted-nightstand": {
+    "dims": {
+      "w": 0.505,
+      "d": 0.509,
+      "h": 0.616
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/painted_wooden_nightstand",
+    "license": "CC0"
+  },
+  "six-drawer-chest": {
+    "dims": {
+      "w": 0.858,
+      "d": 0.443,
+      "h": 0.767
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/vintage_wooden_drawer_01",
+    "license": "CC0"
+  },
+  "long-farm-table": {
+    "dims": {
+      "w": 2.406,
+      "d": 1.137,
+      "h": 0.959
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/painted_wooden_table",
+    "license": "CC0"
+  },
+  "wooden-bench": {
+    "dims": {
+      "w": 1.165,
+      "d": 0.497,
+      "h": 0.889
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/painted_wooden_bench",
+    "license": "CC0"
+  },
+  "blue-wooden-chair": {
+    "dims": {
+      "w": 0.639,
+      "d": 0.662,
+      "h": 1.264
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/painted_wooden_chair_02",
+    "license": "CC0"
+  },
+  "kitchen-wood-table": {
+    "dims": {
+      "w": 1.134,
+      "d": 0.706,
+      "h": 0.8
+    },
+    "credit": "Serhii Khromov",
+    "source": "https://polyhaven.com/a/wooden_table_02",
+    "license": "CC0"
+  },
+  "small-shelves": {
+    "dims": {
+      "w": 0.511,
+      "d": 0.367,
+      "h": 1.125
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/painted_wooden_shelves",
+    "license": "CC0"
+  },
+  "display-shelves": {
+    "dims": {
+      "w": 1.078,
+      "d": 0.372,
+      "h": 1.556
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/wooden_display_shelves_01",
+    "license": "CC0"
+  },
+  "electric-stove": {
+    "dims": {
+      "w": 0.503,
+      "d": 0.648,
+      "h": 0.859
+    },
+    "credit": "Kuutti Siitonen",
+    "source": "https://polyhaven.com/a/electric_stove",
+    "license": "CC0"
+  },
+  "electric-kettle": {
+    "dims": {
+      "w": 0.321,
+      "d": 0.249,
+      "h": 0.305
+    },
+    "credit": "SV Garip",
+    "source": "https://polyhaven.com/a/vintage_electric_kettle",
+    "license": "CC0"
+  },
+  "enamel-pot": {
+    "dims": {
+      "w": 0.263,
+      "d": 0.18,
+      "h": 0.178
+    },
+    "credit": "Kuutti Siitonen",
+    "source": "https://polyhaven.com/a/pot_enamel_01",
+    "license": "CC0"
+  },
+  "metal-jug": {
+    "dims": {
+      "w": 0.197,
+      "d": 0.195,
+      "h": 0.288
+    },
+    "credit": "Anzor Lezhava",
+    "source": "https://polyhaven.com/a/metal_jug",
+    "license": "CC0"
+  },
+  "clay-jug": {
+    "dims": {
+      "w": 0.275,
+      "d": 0.168,
+      "h": 0.211
+    },
+    "credit": "Kuutti Siitonen",
+    "source": "https://polyhaven.com/a/jug_01",
+    "license": "CC0"
+  },
+  "tea-set": {
+    "dims": {
+      "w": 0.918,
+      "d": 0.484,
+      "h": 0.165
+    },
+    "credit": "James Ray Cock، Rico Cilliers، Jurita Burger",
+    "source": "https://polyhaven.com/a/tea_set_01",
+    "license": "CC0"
+  },
+  "wooden-bowl": {
+    "dims": {
+      "w": 0.313,
+      "d": 0.309,
+      "h": 0.094
+    },
+    "credit": "Oliver Harries",
+    "source": "https://polyhaven.com/a/wooden_bowl_01",
+    "license": "CC0"
+  },
+  "wicker-basket": {
+    "dims": {
+      "w": 0.347,
+      "d": 0.254,
+      "h": 0.2
+    },
+    "credit": "Kuutti Siitonen",
+    "source": "https://polyhaven.com/a/wicker_basket_02",
+    "license": "CC0"
+  },
+  "school-desk": {
+    "dims": {
+      "w": 0.712,
+      "d": 0.546,
+      "h": 0.883
+    },
+    "credit": "Ethan Place",
+    "source": "https://polyhaven.com/a/SchoolDesk_01",
+    "license": "CC0"
+  },
+  "school-chair": {
+    "dims": {
+      "w": 0.566,
+      "d": 0.675,
+      "h": 1.006
+    },
+    "credit": "Ethan Place",
+    "source": "https://polyhaven.com/a/SchoolChair_01",
+    "license": "CC0"
+  },
+  "metal-stool": {
+    "dims": {
+      "w": 0.448,
+      "d": 0.473,
+      "h": 0.458
+    },
+    "credit": "Ulan Cabanilla",
+    "source": "https://polyhaven.com/a/metal_stool_02",
+    "license": "CC0"
+  },
+  "folding-stool": {
+    "dims": {
+      "w": 0.528,
+      "d": 0.547,
+      "h": 0.442
+    },
+    "credit": "Ulan Cabanilla",
+    "source": "https://polyhaven.com/a/folding_wooden_stool",
+    "license": "CC0"
+  },
+  "encyclopedia": {
+    "dims": {
+      "w": 0.551,
+      "d": 0.163,
+      "h": 0.237
+    },
+    "credit": "John Malcolm",
+    "source": "https://polyhaven.com/a/book_encyclopedia_set_01",
+    "license": "CC0"
+  },
+  "chess-set": {
+    "dims": {
+      "w": 0.553,
+      "d": 0.553,
+      "h": 0.112
+    },
+    "credit": "Riley Queen",
+    "source": "https://polyhaven.com/a/chess_set",
+    "license": "CC0"
+  },
+  "retro-tv": {
+    "dims": {
+      "w": 0.471,
+      "d": 0.6,
+      "h": 0.457
+    },
+    "credit": "Gabriel Radić",
+    "source": "https://polyhaven.com/a/Television_01",
+    "license": "CC0"
+  },
+  "small-tv": {
+    "dims": {
+      "w": 0.4,
+      "d": 0.35,
+      "h": 0.411
+    },
+    "credit": "Benny Weimer",
+    "source": "https://polyhaven.com/a/television_02",
+    "license": "CC0"
+  },
+  "boombox": {
+    "dims": {
+      "w": 0.724,
+      "d": 0.186,
+      "h": 0.47
+    },
+    "credit": "Thomas Paul Mouilleron",
+    "source": "https://polyhaven.com/a/boombox",
+    "license": "CC0"
+  },
+  "walkman": {
+    "dims": {
+      "w": 0.172,
+      "d": 0.04,
+      "h": 0.13
+    },
+    "credit": "Mateusz Sadek",
+    "source": "https://polyhaven.com/a/portable_cassette_player",
+    "license": "CC0"
+  },
+  "old-radio": {
+    "dims": {
+      "w": 0.574,
+      "d": 0.413,
+      "h": 0.434
+    },
+    "credit": "Mateusz Sadek",
+    "source": "https://polyhaven.com/a/vintage_radio_transceiver",
+    "license": "CC0"
+  },
+  "game-console": {
+    "dims": {
+      "w": 0.325,
+      "d": 0.319,
+      "h": 0.1
+    },
+    "credit": "Sean Buckley",
+    "source": "https://polyhaven.com/a/gaming_console",
+    "license": "CC0"
+  },
+  "photo-frame": {
+    "dims": {
+      "w": 0.201,
+      "d": 0.1,
+      "h": 0.25
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/standing_picture_frame_01",
+    "license": "CC0"
+  },
+  "photo-frame-2": {
+    "dims": {
+      "w": 0.217,
+      "d": 0.102,
+      "h": 0.266
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/standing_picture_frame_02",
+    "license": "CC0"
+  },
+  "brass-lantern": {
+    "dims": {
+      "w": 0.123,
+      "d": 0.123,
+      "h": 0.381
+    },
+    "credit": "Bhargav Kubal",
+    "source": "https://polyhaven.com/a/brass_diya_lantern",
+    "license": "CC0"
+  },
+  "wood-lantern": {
+    "dims": {
+      "w": 0.221,
+      "d": 0.235,
+      "h": 0.53
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/wooden_lantern_01",
+    "license": "CC0"
+  },
+  "brass-vase-medium": {
+    "dims": {
+      "w": 0.21,
+      "d": 0.21,
+      "h": 0.529
+    },
+    "credit": "Rico Cilliers",
+    "source": "https://polyhaven.com/a/brass_vase_02",
+    "license": "CC0"
+  },
+  "slim-vase": {
+    "dims": {
+      "w": 0.112,
+      "d": 0.112,
+      "h": 0.414
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/ceramic_vase_03",
+    "license": "CC0"
+  },
+  "round-vase": {
+    "dims": {
+      "w": 0.181,
+      "d": 0.181,
+      "h": 0.342
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/ceramic_vase_04",
+    "license": "CC0"
+  },
+  "horse-statue": {
+    "dims": {
+      "w": 0.163,
+      "d": 0.108,
+      "h": 0.22
+    },
+    "credit": "Rico Cilliers",
+    "source": "https://polyhaven.com/a/horse_statue_01",
+    "license": "CC0"
+  },
+  "marble-bust": {
+    "dims": {
+      "w": 0.272,
+      "d": 0.3,
+      "h": 0.515
+    },
+    "credit": "Rico Cilliers",
+    "source": "https://polyhaven.com/a/marble_bust_01",
+    "license": "CC0"
+  },
+  "wood-elephant": {
+    "dims": {
+      "w": 0.109,
+      "d": 0.058,
+      "h": 0.096
+    },
+    "credit": "Greg Zaal",
+    "source": "https://polyhaven.com/a/carved_wooden_elephant",
+    "license": "CC0"
+  },
+  "candlestick": {
+    "dims": {
+      "w": 0.097,
+      "d": 0.099,
+      "h": 0.22
+    },
+    "credit": "Josh Dean",
+    "source": "https://polyhaven.com/a/wooden_candlestick",
     "license": "CC0"
   }
 }

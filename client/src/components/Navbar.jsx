@@ -108,3 +108,31 @@ export function Footer() {
     </footer>
   )
 }
+
+/** App-style tab bar for phones (hidden on desktop and inside the studio). */
+export function MobileTabs() {
+  const count = useCart(cartCount)
+  const { user } = useAuth()
+  const { pathname } = useLocation()
+  if (pathname.startsWith('/studio')) return null
+  const tabs = [
+    { to: '/', icon: 'home', label: 'الرئيسية', end: true },
+    { to: '/catalog', icon: 'sofa', label: 'الموبيليا' },
+    { to: '/studio', icon: 'cube', label: 'الاستوديو', main: true },
+    { to: '/cart', icon: 'cart', label: 'السلة', badge: count },
+    { to: user ? '/designs' : '/login', icon: 'user', label: user ? 'حسابي' : 'دخول' },
+  ]
+  return (
+    <nav className="tabbar" aria-label="التنقل">
+      {tabs.map((t) => (
+        <NavLink key={t.to} to={t.to} end={t.end} className={`tab ${t.main ? 'tab-main' : ''}`}>
+          <span className="tab-icon">
+            <Icon name={t.icon} size={t.main ? 24 : 21} />
+            {t.badge > 0 && <span className="cart-badge">{t.badge > 99 ? '99+' : t.badge}</span>}
+          </span>
+          <span className="tab-label">{t.label}</span>
+        </NavLink>
+      ))}
+    </nav>
+  )
+}

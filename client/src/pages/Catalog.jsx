@@ -6,12 +6,20 @@ import { ErrorState, Loading } from '../components/States.jsx'
 import { useApi } from '../lib/useApi.js'
 import { formatNumber } from '../lib/format.js'
 
+function sortProducts(list, sort) {
+  if (sort === 'price-asc') return [...list].sort((a, b) => a.price - b.price)
+  if (sort === 'price-desc') return [...list].sort((a, b) => b.price - a.price)
+  if (sort === 'scan') return [...list].sort((a, b) => Boolean(b.modelUrl) - Boolean(a.modelUrl))
+  return list
+}
+
 export default function Catalog() {
   const [params, setParams] = useSearchParams()
   const category = params.get('category') || ''
   const source = params.get('source') || ''
   const [q, setQ] = useState(params.get('q') || '')
   const [debounced, setDebounced] = useState(q)
+  const [sort, setSort] = useState('default')
 
   useEffect(() => {
     const t = setTimeout(() => setDebounced(q.trim()), 300)
@@ -41,6 +49,11 @@ export default function Catalog() {
         <p className="muted">كل قطعة هنا مجسّم 3D بالقياس الحقيقي. اختار لونها، وبضغطة وحدة تجربها بالاستوديو.</p>
       </div>
 
+      <label className="search catalog-search">
+        <Icon name="search" size={18} />
+        <input className="input" placeholder="دوّر على قطعة: قنفة، ميز، مبردة..." value={q} onChange={(e) => setQ(e.target.value)} />
+      </label>
+
       <div className="filters">
         <button
           className={`filter-chip ${source === 'scan' ? 'active' : ''}`}
@@ -64,18 +77,25 @@ export default function Catalog() {
             {c.name} <small>{formatNumber(c.productCount)}</small>
           </button>
         ))}
-        <label className="search">
-          <Icon name="search" size={18} />
-          <input className="input" placeholder="دوّر على قطعة..." value={q} onChange={(e) => setQ(e.target.value)} />
-        </label>
       </div>
 
       {products.loading && !products.data && <Loading />}
       {products.error && <ErrorState error={products.error} onRetry={products.reload} />}
+      {products.data && (
+        <div className="list-bar">
+          <span className="muted">{formatNumber(products.data.products.length)} قطعة</span>
+          <select className="select sort-select" value={sort} onChange={(e) => setSort(e.target.value)} aria-label="الترتيب">
+            <option value="default">الترتيب: المقترح</option>
+            <option value="price-asc">السعر: من الأرخص</option>
+            <option value="price-desc">السعر: من الأغلى</option>
+            <option value="scan">الحقيقي 3D أول</option>
+          </select>
+        </div>
+      )}
       {products.data &&
         (products.data.products.length ? (
           <div className="grid" style={{ opacity: products.loading ? 0.6 : 1, transition: 'opacity .2s' }}>
-            {products.data.products.map((p) => (
+            {sortProducts(products.data.products, sort).map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>

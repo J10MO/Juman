@@ -138,6 +138,15 @@ export default function Product() {
         </div>
       </div>
 
+      {/* phones: price and buy button always in reach */}
+      <div className="buy-bar">
+        <div>
+          <strong>{formatPrice(product.price)}</strong>
+          <span>{product.name}</span>
+        </div>
+        <AddToCart product={product} color={color} />
+      </div>
+
       {data.related.length > 0 && (
         <section className="section">
           <div className="section-head">
