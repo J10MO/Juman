@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../lib/auth.jsx'
 import { cartCount, useCart } from '../lib/cart.js'
-import { Icon, LogoMark } from './Icon.jsx'
+import { Icon } from './Icon.jsx'
 
 export function Navbar() {
   const { user, logout } = useAuth()
@@ -16,9 +16,8 @@ export function Navbar() {
   return (
     <header className="nav">
       <div className="container nav-inner">
-        <Link to="/" className="logo" aria-label="جُمان - الرئيسية">
-          <LogoMark />
-          جُمان
+        <Link to="/" className="logo" aria-label="جُمان Juman Home - الرئيسية">
+          <img src="/brand/logo.png" alt="Juman Home" className="logo-img" width="1182" height="512" />
         </Link>
         <nav className={`nav-links ${open ? 'open' : ''}`}>
           <NavLink to="/" end>
@@ -74,8 +73,7 @@ export function Footer() {
         <div className="footer-grid">
           <div>
             <div className="logo">
-              <LogoMark />
-              جُمان
+              <img src="/brand/logo-light.png" alt="Juman Home" className="logo-img logo-img-footer" width="1182" height="512" />
             </div>
             <p>
               نخليك تشوف بيتك قبل لا تشتري. اسحب، ذب، دوّر ورتّب على راحتك، وبعدين اطلب وإحنا نوصلّك لباب البيت بكل

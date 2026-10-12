@@ -66,20 +66,3 @@ export function Icon({ name, size = 20, stroke = 1.8, ...rest }) {
     </svg>
   )
 }
-
-export function LogoMark({ className = 'logo-mark' }) {
-  return (
-    <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
-      <defs>
-        <radialGradient id="pearl" cx="38%" cy="35%" r="70%">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="0.55" stopColor="#f3ece0" />
-          <stop offset="1" stopColor="#cdbfa6" />
-        </radialGradient>
-      </defs>
-      <rect width="64" height="64" rx="18" fill="#14213d" />
-      <path d="M17 24 32 13l15 11" stroke="#c8a45c" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="32" cy="38" r="13" fill="url(#pearl)" />
-    </svg>
-  )
-}
