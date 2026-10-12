@@ -12,6 +12,8 @@ import { dragApi } from './dragApi.js'
 import { registry, useCarryMotion } from './Item.jsx'
 
 const START_DISTANCE = 5 // px the pointer must travel before a press becomes a drag
+const SCROLL_SLOP = 10 // px a finger may wobble during a long-press
+const LONG_PRESS_MS = 450 // touch: hold this long on a catalogue card to pick it up (≈ Android long-press)
 const ROT_STEP = Math.PI / 12
 
 /**
@@ -133,6 +135,11 @@ export function DragController() {
     }
 
     const finish = () => {
+      // The catalogue sheet may have slid away under a finger that stopped moving: look again.
+      if (drag.mode === 'new' && !drag.overCanvas && isOverCanvas(drag.clientX, drag.clientY)) {
+        drag.overCanvas = true
+        compute()
+      }
       const s = useStudio.getState()
       if (drag.mode === 'move') {
         const spot = resolveDrop()
@@ -164,10 +171,26 @@ export function DragController() {
       end()
     }
 
+    const release = (p) => {
+      if (!p) return
+      clearTimeout(p.timer)
+      p.el?.classList.remove('armed')
+    }
+
     const onMove = (e) => {
       if (pending.current && !drag.active) {
         const p = pending.current
-        if (Math.hypot(e.clientX - p.startX, e.clientY - p.startY) < START_DISTANCE) return
+        const moved = Math.hypot(e.clientX - p.startX, e.clientY - p.startY)
+        // On touch, moving before the long-press fires means the finger is scrolling the list.
+        if (p.touch && !p.armed) {
+          if (moved > SCROLL_SLOP) {
+            release(p)
+            pending.current = null
+          }
+          return
+        }
+        if (moved < START_DISTANCE) return
+        release(p)
         activate(p)
         pending.current = null
       }
@@ -188,6 +211,7 @@ export function DragController() {
     const onUp = () => {
       const p = pending.current
       pending.current = null
+      release(p)
       if (p && !drag.active) {
         // a click, not a drag
         if (p.kind === 'item') useStudio.getState().select(p.uid)
@@ -198,6 +222,7 @@ export function DragController() {
     }
 
     const onCancel = () => {
+      release(pending.current)
       pending.current = null
       if (drag.active) end()
     }
@@ -217,8 +242,23 @@ export function DragController() {
       if (controls) controls.enabled = false
     }
     dragApi.pressProduct = (product, e, color) => {
-      pending.current = { kind: 'product', product, color, startX: e.clientX, startY: e.clientY }
+      const touch = e.pointerType === 'touch' || e.pointerType === 'pen'
+      const p = {
+        kind: 'product', product, color, startX: e.clientX, startY: e.clientY,
+        touch, armed: !touch, el: e.target.closest?.('.piece'),
+      }
+      if (touch) {
+        // A short tap adds the piece, a swipe scrolls the list, a long-press picks it up.
+        p.timer = setTimeout(() => {
+          if (pending.current !== p) return
+          p.armed = true
+          p.el?.classList.add('armed')
+          navigator.vibrate?.(12)
+        }, LONG_PRESS_MS)
+      }
+      pending.current = p
     }
+    dragApi.isHolding = () => Boolean(pending.current?.touch && pending.current.armed && !drag.active) || (drag.active && drag.mode === 'new')
     dragApi.rotateDrag = (delta) => {
       if (!drag.active) return false
       drag.rot = Math.round((drag.rot + delta) / ROT_STEP) * ROT_STEP

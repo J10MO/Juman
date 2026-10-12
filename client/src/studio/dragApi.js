@@ -5,6 +5,8 @@ export const dragApi = {
   pressItem: () => {},
   /** Pointer pressed on a catalogue card (drag it into the room, or click to add). */
   pressProduct: () => {},
+  /** True while a finger holds a picked-up catalogue card (the list must not scroll). */
+  isHolding: () => false,
   /** Rotate whatever is being dragged (radians). */
   rotateDrag: () => {},
   /** Cancel the current drag. */

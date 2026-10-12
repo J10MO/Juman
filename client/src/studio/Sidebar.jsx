@@ -65,6 +65,16 @@ export function Sidebar() {
     prevCount.current = count
   }, [count])
 
+  // Once a card is picked up with a long-press, stop the list from scrolling under the finger.
+  const listRef = useRef(null)
+  useEffect(() => {
+    const el = listRef.current
+    if (!el) return
+    const block = (e) => dragApi.isHolding() && e.cancelable && e.preventDefault()
+    el.addEventListener('touchmove', block, { passive: false })
+    return () => el.removeEventListener('touchmove', block)
+  }, [])
+
   const tabs = useMemo(() => {
     const seen = new Map()
     products.forEach((p) => seen.set(p.categorySlug, p.categoryName))
@@ -88,6 +98,7 @@ export function Sidebar() {
       <div className="side-head">
         <h2>الموبيليا</h2>
         <p>اسحب أي قطعة وذبها بالغرفة، أو اضغط عليها وتنحط وحدها.</p>
+        <p className="touch-hint">اضغط مرة وحدة حتى تنضاف، أو اضغط مطوّلاً واسحبها للمكان اللي تريده.</p>
         <label className="search side-search">
           <Icon name="search" size={16} />
           <input className="input" placeholder={`دوّر بين ${formatNumber(products.length)} قطعة...`} value={q} onChange={(e) => setQ(e.target.value)} />
@@ -100,7 +111,7 @@ export function Sidebar() {
           ))}
         </div>
       </div>
-      <div className="side-list">
+      <div className="side-list" ref={listRef}>
         {list.map((p) => (
           <Piece key={p.id} product={p} />
         ))}

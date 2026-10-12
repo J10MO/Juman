@@ -3101,3 +3101,29 @@ p {
     pointer-events: none;
   }
 }
+
+/* touch: long-press feedback on catalogue cards */
+.piece {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+}
+
+.piece.armed {
+  transform: scale(1.06);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(200, 164, 92, 0.45), var(--shadow);
+  transition: transform 0.15s var(--ease), box-shadow 0.15s;
+}
+
+.touch-hint {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .studio-side .side-head .touch-hint {
+    display: block;
+    font-size: 0.74rem;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+}
