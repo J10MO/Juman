@@ -6,10 +6,13 @@
     "install:all": "npm install && npm install --prefix server && npm install --prefix client",
     "db:setup": "npm run db:setup --prefix server",
     "dev": "concurrently -k -n api,web -c yellow,cyan \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
-    "build": "npm run build --prefix client",
+    "build": "npm install --prefix server && npm install --include=dev --prefix client && npm run build --prefix client",
     "start": "npm start --prefix server"
   },
   "devDependencies": {
     "concurrently": "9.0.1"
+  },
+  "engines": {
+    "node": ">=22.9"
   }
 }
