@@ -1,0 +1,14 @@
+{
+  "name": "juman-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch-models": "node fetch-models.mjs"
+  },
+  "dependencies": {
+    "@gltf-transform/core": "4.1.0",
+    "@gltf-transform/extensions": "4.1.0",
+    "@gltf-transform/functions": "4.1.0",
+    "sharp": "0.33.5"
+  }
+}

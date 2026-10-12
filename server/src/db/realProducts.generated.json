@@ -1,0 +1,432 @@
+{
+  "chester-leather-sofa": {
+    "dims": {
+      "w": 1.807,
+      "d": 0.818,
+      "h": 0.709
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/sofa_02",
+    "license": "CC0"
+  },
+  "pasha-sofa": {
+    "dims": {
+      "w": 2.731,
+      "d": 0.925,
+      "h": 1.118
+    },
+    "credit": "Fran Calvente",
+    "source": "https://polyhaven.com/a/sofa_03",
+    "license": "CC0"
+  },
+  "victoria-sofa": {
+    "dims": {
+      "w": 1.571,
+      "d": 0.658,
+      "h": 0.797
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/Sofa_01",
+    "license": "CC0"
+  },
+  "orient-wood-sofa": {
+    "dims": {
+      "w": 2.285,
+      "d": 0.969,
+      "h": 0.86
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/chinese_sofa",
+    "license": "CC0"
+  },
+  "royal-armchair": {
+    "dims": {
+      "w": 0.848,
+      "d": 0.766,
+      "h": 1.065
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/ArmChair_01",
+    "license": "CC0"
+  },
+  "nordic-lounge-chair": {
+    "dims": {
+      "w": 0.82,
+      "d": 0.987,
+      "h": 1.023
+    },
+    "credit": "Vibrant Nordic",
+    "source": "https://polyhaven.com/a/modern_arm_chair_01",
+    "license": "CC0"
+  },
+  "retro-recliner": {
+    "dims": {
+      "w": 1.009,
+      "d": 1.19,
+      "h": 1.169
+    },
+    "credit": "Kuutti Siitonen",
+    "source": "https://polyhaven.com/a/mid_century_lounge_chair",
+    "license": "CC0"
+  },
+  "green-gothic-chair": {
+    "dims": {
+      "w": 0.673,
+      "d": 0.664,
+      "h": 1.059
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/GreenChair_01",
+    "license": "CC0"
+  },
+  "rocking-chair": {
+    "dims": {
+      "w": 0.708,
+      "d": 0.833,
+      "h": 0.995
+    },
+    "credit": "Jorge Camacho",
+    "source": "https://polyhaven.com/a/Rockingchair_01",
+    "license": "CC0"
+  },
+  "marble-round-table": {
+    "dims": {
+      "w": 1.301,
+      "d": 1.301,
+      "h": 0.491
+    },
+    "credit": "Ulan Cabanilla",
+    "source": "https://polyhaven.com/a/coffee_table_round_01",
+    "license": "CC0"
+  },
+  "square-coffee-table": {
+    "dims": {
+      "w": 1.199,
+      "d": 1.2,
+      "h": 0.369
+    },
+    "credit": "Amin",
+    "source": "https://polyhaven.com/a/modern_coffee_table_02",
+    "license": "CC0"
+  },
+  "turquoise-heritage-table": {
+    "dims": {
+      "w": 1.54,
+      "d": 0.973,
+      "h": 0.523
+    },
+    "credit": "Fernando Quinn",
+    "source": "https://polyhaven.com/a/CoffeeTable_01",
+    "license": "CC0"
+  },
+  "oak-side-table": {
+    "dims": {
+      "w": 0.55,
+      "d": 0.45,
+      "h": 0.551
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/side_table_01",
+    "license": "CC0"
+  },
+  "tall-side-table": {
+    "dims": {
+      "w": 0.384,
+      "d": 0.384,
+      "h": 0.761
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/side_table_tall_01",
+    "license": "CC0"
+  },
+  "tea-table": {
+    "dims": {
+      "w": 0.841,
+      "d": 0.836,
+      "h": 0.499
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/chinese_tea_table",
+    "license": "CC0"
+  },
+  "slatted-tv-cabinet": {
+    "dims": {
+      "w": 2.44,
+      "d": 0.52,
+      "h": 0.68
+    },
+    "credit": "Patrik Pangerl",
+    "source": "https://polyhaven.com/a/modern_wooden_cabinet",
+    "license": "CC0"
+  },
+  "glass-buffet": {
+    "dims": {
+      "w": 2.022,
+      "d": 0.67,
+      "h": 2.235
+    },
+    "credit": "Rico Cilliers",
+    "source": "https://polyhaven.com/a/vintage_cabinet_01",
+    "license": "CC0"
+  },
+  "carved-console": {
+    "dims": {
+      "w": 1.72,
+      "d": 0.339,
+      "h": 0.661
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/chinese_console_table",
+    "license": "CC0"
+  },
+  "round-bistro-table": {
+    "dims": {
+      "w": 0.796,
+      "d": 0.796,
+      "h": 0.746
+    },
+    "credit": "Ulan Cabanilla",
+    "source": "https://polyhaven.com/a/round_wooden_table_02",
+    "license": "CC0"
+  },
+  "tufted-dining-chair": {
+    "dims": {
+      "w": 0.434,
+      "d": 0.576,
+      "h": 0.973
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/dining_chair_02",
+    "license": "CC0"
+  },
+  "farmhouse-chair": {
+    "dims": {
+      "w": 0.432,
+      "d": 0.54,
+      "h": 0.956
+    },
+    "credit": "Kuutti Siitonen",
+    "source": "https://polyhaven.com/a/painted_wooden_chair_01",
+    "license": "CC0"
+  },
+  "bar-stool": {
+    "dims": {
+      "w": 0.483,
+      "d": 0.486,
+      "h": 0.751
+    },
+    "credit": "Dairon Sanchez",
+    "source": "https://polyhaven.com/a/bar_chair_round_01",
+    "license": "CC0"
+  },
+  "four-poster-bed": {
+    "dims": {
+      "w": 1.494,
+      "d": 2.04,
+      "h": 1.534
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/GothicBed_01",
+    "license": "CC0"
+  },
+  "iron-single-bed": {
+    "dims": {
+      "w": 0.905,
+      "d": 2.002,
+      "h": 1.201
+    },
+    "credit": "Luca B",
+    "source": "https://polyhaven.com/a/old_bed_frame",
+    "license": "CC0"
+  },
+  "day-bed": {
+    "dims": {
+      "w": 1.973,
+      "d": 0.855,
+      "h": 1.127
+    },
+    "credit": "Aron Łyczek",
+    "source": "https://polyhaven.com/a/vintage_day_bed",
+    "license": "CC0"
+  },
+  "drawer-shelf": {
+    "dims": {
+      "w": 1.141,
+      "d": 0.488,
+      "h": 1.881
+    },
+    "credit": "Ulan Cabanilla",
+    "source": "https://polyhaven.com/a/drawer_cabinet",
+    "license": "CC0"
+  },
+  "farmhouse-dresser": {
+    "dims": {
+      "w": 1.195,
+      "d": 0.617,
+      "h": 1.182
+    },
+    "credit": "Kirill Sannikov",
+    "source": "https://polyhaven.com/a/painted_wooden_cabinet",
+    "license": "CC0"
+  },
+  "metal-office-desk": {
+    "dims": {
+      "w": 2,
+      "d": 0.947,
+      "h": 0.788
+    },
+    "credit": "Ulan Cabanilla",
+    "source": "https://polyhaven.com/a/metal_office_desk",
+    "license": "CC0"
+  },
+  "painted-bookcase": {
+    "dims": {
+      "w": 1.003,
+      "d": 0.257,
+      "h": 2.08
+    },
+    "credit": "Gabriel Radić",
+    "source": "https://polyhaven.com/a/Shelf_01",
+    "license": "CC0"
+  },
+  "wide-bookshelf": {
+    "dims": {
+      "w": 1.374,
+      "d": 0.581,
+      "h": 2.063
+    },
+    "credit": "Ulan Cabanilla",
+    "source": "https://polyhaven.com/a/wooden_bookshelf_worn",
+    "license": "CC0"
+  },
+  "terracotta-plant": {
+    "dims": {
+      "w": 0.587,
+      "d": 0.634,
+      "h": 1.35
+    },
+    "credit": "Rico Cilliers",
+    "source": "https://polyhaven.com/a/potted_plant_01",
+    "license": "CC0"
+  },
+  "heart-leaf-plant": {
+    "dims": {
+      "w": 0.701,
+      "d": 0.657,
+      "h": 0.841
+    },
+    "credit": "Rico Cilliers",
+    "source": "https://polyhaven.com/a/potted_plant_02",
+    "license": "CC0"
+  },
+  "brass-floor-vase": {
+    "dims": {
+      "w": 0.227,
+      "d": 0.227,
+      "h": 0.692
+    },
+    "credit": "Rico Cilliers",
+    "source": "https://polyhaven.com/a/brass_vase_01",
+    "license": "CC0"
+  },
+  "blue-china-vase": {
+    "dims": {
+      "w": 0.255,
+      "d": 0.255,
+      "h": 0.44
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/antique_ceramic_vase_01",
+    "license": "CC0"
+  },
+  "white-fluted-vase": {
+    "dims": {
+      "w": 0.204,
+      "d": 0.204,
+      "h": 0.4
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/ceramic_vase_01",
+    "license": "CC0"
+  },
+  "oil-lamp": {
+    "dims": {
+      "w": 0.22,
+      "d": 0.22,
+      "h": 0.802
+    },
+    "credit": "Monsta3D",
+    "source": "https://polyhaven.com/a/vintage_oil_lamp",
+    "license": "CC0"
+  },
+  "shelf-clock": {
+    "dims": {
+      "w": 0.342,
+      "d": 0.126,
+      "h": 0.16
+    },
+    "credit": "Yann Kervran، Rico Cilliers",
+    "source": "https://polyhaven.com/a/mantel_clock_01",
+    "license": "CC0"
+  },
+  "bell-alarm-clock": {
+    "dims": {
+      "w": 0.132,
+      "d": 0.067,
+      "h": 0.174
+    },
+    "credit": "Yann Kervran، James Ray Cock",
+    "source": "https://polyhaven.com/a/alarm_clock_01",
+    "license": "CC0"
+  },
+  "brass-pot": {
+    "dims": {
+      "w": 0.302,
+      "d": 0.302,
+      "h": 0.291
+    },
+    "credit": "Rico Cilliers",
+    "source": "https://polyhaven.com/a/brass_pot_01",
+    "license": "CC0"
+  },
+  "tiny-succulent": {
+    "dims": {
+      "w": 0.168,
+      "d": 0.185,
+      "h": 0.267
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/potted_plant_04",
+    "license": "CC0"
+  },
+  "leather-ottoman": {
+    "dims": {
+      "w": 0.885,
+      "d": 0.621,
+      "h": 0.624
+    },
+    "credit": "Caspian Fortune",
+    "source": "https://polyhaven.com/a/Ottoman_01",
+    "license": "CC0"
+  },
+  "stone-coffee-table": {
+    "dims": {
+      "w": 0.6,
+      "d": 1.202,
+      "h": 0.39
+    },
+    "credit": "Amin",
+    "source": "https://polyhaven.com/a/modern_coffee_table_01",
+    "license": "CC0"
+  },
+  "rustic-dining-table": {
+    "dims": {
+      "w": 2.256,
+      "d": 1.39,
+      "h": 0.877
+    },
+    "credit": "Aron Łyczek",
+    "source": "https://polyhaven.com/a/dining_table",
+    "license": "CC0"
+  }
+}

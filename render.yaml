@@ -1,0 +1,21 @@
+# Render Blueprint: one free web service that serves the React build and the API.
+# The database lives on Neon; paste its connection string as DATABASE_URL in Render.
+services:
+  - type: web
+    name: juman
+    runtime: node
+    plan: free
+    region: frankfurt
+    # devDependencies (vite) are needed to build the client even with NODE_ENV=production
+    buildCommand: npm install --prefix server && npm install --include=dev --prefix client && npm run build --prefix client
+    startCommand: npm start --prefix server
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.14.0
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
