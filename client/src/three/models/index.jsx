@@ -95,11 +95,18 @@ export const FurnitureModel = memo(function FurnitureModel({ product, color, lit
     return <group ref={ref}>{suspend ? model : <Suspense fallback={<LoadingBox dims={product.dims} />}>{model}</Suspense>}</group>
   }
 
-  const Model = MODELS[product.modelKey]
+  // model keys may carry a variant, e.g. "rug:kilim"
+  const [key, variant] = product.modelKey.split(':')
+  const Model = MODELS[key]
   if (!Model) return null
   return (
     <group ref={ref}>
-      <Model color={color && color !== 'natural' ? color : product.colors?.[0] || '#cccccc'} dims={product.dims} lit={lit} />
+      <Model
+        color={color && color !== 'natural' ? color : product.colors?.[0] || '#cccccc'}
+        dims={product.dims}
+        lit={lit}
+        variant={variant}
+      />
     </group>
   )
 })

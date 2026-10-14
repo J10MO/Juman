@@ -7,6 +7,7 @@ import { useToast } from '../components/Toast.jsx'
 import { ErrorState, Loading } from '../components/States.jsx'
 import { DragChip, Sidebar } from './Sidebar.jsx'
 import { Inspector, SettingsPanel, TemplatePicker, Toolbar } from './Panels.jsx'
+import { PlanEditor } from './PlanEditor.jsx'
 import StudioScene from './StudioScene.jsx'
 import { restoreDraft, useStudio } from './store.js'
 import { dragApi } from './dragApi.js'
@@ -57,6 +58,7 @@ export default function StudioPage() {
   const itemCount = useStudio((s) => s.items.length)
   const dragNew = useStudio((s) => s.draggingUid === 'new')
   const overCanvas = useStudio((s) => s.overCanvas)
+  const planEditor = useStudio((s) => s.planEditor)
   const [loadingDesign, setLoadingDesign] = useState(Boolean(id))
   const [designError, setDesignError] = useState(null)
   const [saving, setSaving] = useState(false)
@@ -218,6 +220,7 @@ export default function StudioPage() {
           onShot={screenshot}
         />
         {settings && <SettingsPanel onClose={() => setSettings(false)} />}
+        {planEditor && <PlanEditor onClose={() => useStudio.setState({ planEditor: false })} />}
         <Inspector />
         <div className="hints">
           <span>🖱️ اسحب القطعة حتى تحركها، وبالعجلة تدوّرها وهي بإيدك</span>

@@ -4,7 +4,7 @@ import { Icon } from '../components/Icon.jsx'
 import { AddToCart, ProductCard, Swatches } from '../components/ProductCard.jsx'
 import { ErrorState, Loading } from '../components/States.jsx'
 import { useApi } from '../lib/useApi.js'
-import { colorName, formatDims, formatPrice } from '../lib/format.js'
+import { colorName, formatDims, formatNumber, formatPrice } from '../lib/format.js'
 
 const ModelViewer = lazy(() => import('../components/ModelViewer.jsx').then((m) => ({ default: m.ModelViewer })))
 
@@ -15,6 +15,28 @@ const KIND = {
 }
 // The 'kind' row reads better with a hint that tables can carry things.
 const kindLabel = (p) => (p.surfaceHeight ? `${KIND[p.kind]}، وتگدر تحط أغراض فوگها` : KIND[p.kind])
+
+const cm = (m) => `${formatNumber(Math.round(m * 100))} سم`
+
+/** Every fact we know about a product, as label / value rows. */
+function specRows(p) {
+  const colors = p.colors.length === 1 && p.colors[0] === 'natural' ? 'الخامة الأصلية فقط' : p.colors.map(colorName).join('، ')
+  return [
+    ['القسم', p.categoryName],
+    ['العرض', cm(p.dims.w)],
+    ['العمق', cm(p.dims.d)],
+    ['الارتفاع', cm(Math.max(0.01, p.dims.h))],
+    ['المساحة على القاع', `${formatNumber(Math.round(p.dims.w * p.dims.d * 100) / 100)} م²`],
+    ['الخامة', p.material || 'خشب وقماش'],
+    ['الألوان المتوفرة', colors],
+    ['وين تنحط', kindLabel(p)],
+    ['المجسّم', p.modelUrl ? 'ممسوح من قطعة حقيقية (Poly Haven، رخصة CC0)' : 'مجسّم 3D مصمم بجُمان'],
+    ['رقم المنتج', `JM-${String(p.id).padStart(4, '0')}`],
+    ['الدفع', 'عند الاستلام'],
+    ['التوصيل والنصب', 'مجاني ببغداد، ١٥ ألف لباقي المحافظات'],
+    ['الضمان', 'سنتين'],
+  ]
+}
 
 export default function Product() {
   const { slug } = useParams()
@@ -93,10 +115,6 @@ export default function Product() {
               <strong>{formatDims(product.dims)}</strong>
             </div>
             <div className="spec">
-              <span>وين تنحط</span>
-              <strong>{kindLabel(product)}</strong>
-            </div>
-            <div className="spec">
               <span>الخامة</span>
               <strong>{product.material || 'خشب وقماش'}</strong>
             </div>
@@ -137,6 +155,20 @@ export default function Product() {
           )}
         </div>
       </div>
+
+      <section className="spec-section">
+        <h2>المواصفات الكاملة</h2>
+        <table className="spec-table">
+          <tbody>
+            {specRows(product).map(([k, v]) => (
+              <tr key={k}>
+                <th scope="row">{k}</th>
+                <td>{v}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
 
       {/* phones: price and buy button always in reach */}
       <div className="buy-bar">

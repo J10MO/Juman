@@ -6,11 +6,12 @@ export const categories = [
   { slug: 'living', name: 'الصالة والهول', blurb: 'قنفات وكراسي وميزات تخلي الگعدة وية الأهل أحلى', sort: 1 },
   { slug: 'bedroom', name: 'غرفة النوم', blurb: 'سرير مريح وكنتور يلم كل شي', sort: 2 },
   { slug: 'dining', name: 'الطعام', blurb: 'ميز يلم العايلة كلها على الغدا', sort: 3 },
-  { slug: 'office', name: 'المكتب والقراية', blurb: 'زاوية هادئة للشغل والدراسة', sort: 4 },
-  { slug: 'decor', name: 'الديكور والإنارة', blurb: 'التفاصيل الصغيرة اللي تفرق هواية', sort: 5 },
-  { slug: 'kitchen', name: 'المطبخ', blurb: 'كاونتر وثلاجة وطباخ، كل شي يحتاجه المطبخ', sort: 6 },
-  { slug: 'bathroom', name: 'الحمام', blurb: 'مغاسل وبانيو وتواليت بخامات تلمع', sort: 7 },
-  { slug: 'appliances', name: 'الأجهزة', blurb: 'مبردة للصيف، صوبة للشتا، وپانكة لكل وقت', sort: 8 },
+  { slug: 'kitchen', name: 'المطبخ', blurb: 'كاونتر وثلاجة وطباخ، كل شي يحتاجه المطبخ', sort: 4 },
+  { slug: 'bathroom', name: 'الحمام', blurb: 'مغاسل وبانيو وتواليت بخامات تلمع', sort: 5 },
+  { slug: 'office', name: 'المكتب والقراية', blurb: 'زاوية هادئة للشغل والدراسة', sort: 6 },
+  { slug: 'rugs', name: 'السجاد والزوالي', blurb: 'تبريزي، كليم، مغربي، فرو، وسجادة صلاة', sort: 7 },
+  { slug: 'decor', name: 'الديكور والإنارة', blurb: 'التفاصيل الصغيرة اللي تفرق هواية', sort: 8 },
+  { slug: 'appliances', name: 'الأجهزة', blurb: 'مبردة للصيف، صوبة للشتا، وپانكة لكل وقت', sort: 9 },
 ]
 
 export const products = [
@@ -93,10 +94,10 @@ export const products = [
     kind: 'floor', sort: 2,
   },
   {
-    slug: 'zawiya-rug', name: 'زولية الزاوية', category: 'decor', price: 230000, model_key: 'rug',
+    slug: 'zawiya-rug', name: 'زولية الزاوية', category: 'rugs', price: 230000, model_key: 'rug',
     description: 'زولية منقوشة بنقشة تراثية. تدفّي القاع وتلم الگعدة. تنفرش جوة القنفة والميز.',
     colors: ['#8e2f2a', '#2e4a62', '#7a6a3a'], dims: { w: 2.4, d: 1.7, h: 0.012 },
-    kind: 'rug', featured: true, sort: 1,
+    kind: 'rug', featured: true, sort: 1, material: 'صوف ممزوج',
   },
   {
     slug: 'olive-tree', name: 'شتلة زيتون', category: 'decor', price: 65000, model_key: 'olive-tree',
@@ -191,5 +192,73 @@ export const products = [
     description: 'پانكة أرضية بثلاث ريش وتدور يمين ويسار. شغّالة بالموقع هم، شوفها تدور!',
     colors: ['#f4f2ee', '#2b2b2b', '#3e5c6e'], dims: { w: 0.44, d: 0.44, h: 1.3 },
     kind: 'floor', sort: 3, material: 'بلاستك وحديد',
+  },
+
+  // ---------- rugs (procedural designs: model_key "rug:<pattern>") ----------
+  {
+    slug: 'tabriz-rug', name: 'زولية تبريزي كبيرة', category: 'rugs', price: 690000, model_key: 'rug:tabriz',
+    description: 'زولية تبريزي بنقشة الصُرّة بالنص وإطار عريض. حجمها كبير يلم صالة كاملة، وتعيش عشرين سنة.',
+    colors: ['#7a1f24', '#1f3a5f', '#5b4636'], dims: { w: 3.0, d: 2.0, h: 0.014 },
+    kind: 'rug', featured: true, sort: 2, material: 'صوف طبيعي، عقد يدوي',
+  },
+  {
+    slug: 'kilim-rug', name: 'بساط كليم', category: 'rugs', price: 260000, model_key: 'rug:kilim',
+    description: 'بساط منسوج نسج مسطح بمثلثات ومعينات ملونة. خفيف ويتغسل، يصلح للهول والممرات.',
+    colors: ['#b5442f', '#2e5e6e', '#c8902e'], dims: { w: 2.0, d: 1.4, h: 0.008 },
+    kind: 'rug', sort: 3, material: 'صوف وقطن، نسج يدوي',
+  },
+  {
+    slug: 'moroccan-rug', name: 'زولية مغربية', category: 'rugs', price: 420000, model_key: 'rug:beni',
+    description: 'زولية بيضة منفوشة بخطوط معينات مرسومة باليد، على طريقة بني ورين المغربية. ناعمة على الرجل.',
+    colors: ['#2b2b2b', '#6b4a33', '#3e5c6e'], dims: { w: 2.3, d: 1.6, h: 0.025 },
+    kind: 'rug', sort: 4, material: 'صوف أبيض منفوش',
+  },
+  {
+    slug: 'modern-rug', name: 'زولية مودرن', category: 'rugs', price: 340000, model_key: 'rug:modern',
+    description: 'زولية بدوائر وأقواس ناعمة بألوان هادية. تمشي ويا القنفات العصرية والحيطان الفاتحة.',
+    colors: ['#8fa3a8', '#c9a27a', '#a3a18a'], dims: { w: 2.2, d: 1.6, h: 0.012 },
+    kind: 'rug', sort: 5, material: 'بوليستر ناعم مضاد للبقع',
+  },
+  {
+    slug: 'round-rug', name: 'زولية مدورة', category: 'rugs', price: 310000, model_key: 'rug:round',
+    description: 'زولية مدورة بنقشة وردة بالنص. تجي حلوة جوة ميز القهوة المدور أو بغرفة النوم.',
+    colors: ['#2e4a62', '#8e2f2a', '#3f5e45'], dims: { w: 1.8, d: 1.8, h: 0.012 },
+    kind: 'rug', sort: 6, material: 'صوف وحرير صناعي',
+  },
+  {
+    slug: 'hall-runner', name: 'مدّة ممر', category: 'rugs', price: 210000, model_key: 'rug:runner',
+    description: 'زولية طويلة وضيقة للممر والمطبخ بنقشة متكررة. تحمي القاع وتدفّي المشية.',
+    colors: ['#7a1f24', '#1f3a5f', '#4a5a3a'], dims: { w: 3.0, d: 0.8, h: 0.012 },
+    kind: 'rug', sort: 7, material: 'صوف، عقد آلي',
+  },
+  {
+    slug: 'bedouin-stripes', name: 'بساط بدوي مخطط', category: 'rugs', price: 190000, model_key: 'rug:stripes',
+    description: 'بساط بخطوط عريضة وضيقة بألوان البادية. مكانه بالديوانية ويا المساند.',
+    colors: ['#a3312a', '#2e4a62', '#c8902e'], dims: { w: 1.8, d: 1.2, h: 0.008 },
+    kind: 'rug', sort: 8, material: 'صوف ماعز، نسج يدوي',
+  },
+  {
+    slug: 'shaggy-rug', name: 'زولية فرو', category: 'rugs', price: 280000, model_key: 'rug:shaggy',
+    description: 'زولية فرو منفوشة كلش ناعمة. للگعدة على القاع بغرفة النوم والشتا.',
+    colors: ['#e9e4dc', '#8a8f96', '#c4a484', '#d8a7a7'], dims: { w: 2.0, d: 1.5, h: 0.035 },
+    kind: 'rug', sort: 9, material: 'بوليستر فرو طويل',
+  },
+  {
+    slug: 'kids-rug', name: 'زولية أطفال', category: 'rugs', price: 150000, model_key: 'rug:kids',
+    description: 'زولية لعب بيها شارع وبيوت وأشجار. الجهال يلعبون عليها بالسيارات ساعات.',
+    colors: ['#9ecbd9', '#f2c6a0', '#c9b8e0'], dims: { w: 2.0, d: 1.4, h: 0.012 },
+    kind: 'rug', sort: 10, material: 'نايلون ناعم وقاعدة مانعة للتزحلق',
+  },
+  {
+    slug: 'prayer-rug', name: 'سجادة صلاة', category: 'rugs', price: 45000, model_key: 'rug:prayer',
+    description: 'سجادة صلاة بمحراب وقنديل وإطار منقوش. تنطوي وتنحط بالكنتور.',
+    colors: ['#1f5e4a', '#7a1f24', '#2e4a62'], dims: { w: 1.15, d: 0.7, h: 0.01 },
+    kind: 'rug', sort: 11, material: 'قطيفة ناعمة',
+  },
+  {
+    slug: 'bath-mat', name: 'دواسة حمام', category: 'rugs', price: 20000, model_key: 'rug:bath',
+    description: 'دواسة قطن تمتص الماي، تنحط يم البانيو أو باب الحمام.',
+    colors: ['#b7c4cf', '#e9e4dc', '#9db8a0'], dims: { w: 0.8, d: 0.5, h: 0.015 },
+    kind: 'rug', sort: 12, material: 'قطن ١٠٠٪',
   },
 ]

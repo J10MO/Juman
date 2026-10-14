@@ -73,7 +73,7 @@ export function House({ plan, night, walls = 'auto', activeRoom, onFloorClick })
     })
     decorRefs.current.forEach((g, i) => {
       if (!g) return
-      const f = h.get(built.decor[i].key) ?? 1
+      const f = h.get(built.decor[i].group) ?? 1
       g.scale.y = f
       g.visible = f > 0.3
     })

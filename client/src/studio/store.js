@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { extents, findFreeSpot, indexItems, newUid, worldOf } from './placement.js'
-import { WALL_T, makePlan, planFromLegacyRoom, roomAt } from './plan.js'
+import { WALL_T, cleanOpenings, ensureOpenings, generatePlan, makePlan, planFromLegacyRoom, roomAt, roomRect } from './plan.js'
 import { furnishPlan } from './furnish.js'
 
 export const WALL_COLORS = ['#ece6dc', '#f5f1ea', '#d9cbb4', '#c9d3cf', '#b7c4cf', '#e3cfc0', '#8f9e8b', '#2f3e4e']
@@ -61,6 +61,7 @@ export const useStudio = create((set, get) => ({
   dirty: false,
   cameraCmd: { name: 'persp', n: 0 },
   templatePicker: false,
+  planEditor: false,
 
   setProducts: (products) =>
     set({ products, productMap: Object.fromEntries(products.map((p) => [p.id, p])) }),
@@ -153,6 +154,58 @@ export const useStudio = create((set, get) => ({
 
   setActiveRoom: (id) => set({ activeRoom: id }),
 
+  /** Replace the plan (the plan editor works on whole plans). */
+  setPlan: (plan, { record = true } = {}) => {
+    if (record) get().record()
+    set({ plan, dirty: true })
+  },
+
+  /** Move a room by (dx, dz) together with the furniture standing in it and the openings on its walls. */
+  moveRoom: (id, dx, dz) =>
+    set((s) => {
+      const room = s.plan.rooms.find((r) => r.id === id)
+      if (!room) return {}
+      const { x0, x1, z0, z1 } = roomRect(room)
+      const inside = (x, z) => x >= x0 - 1e-3 && x <= x1 + 1e-3 && z >= z0 - 1e-3 && z <= z1 + 1e-3
+      const onEdge = (o) =>
+        o.axis === 'x'
+          ? (Math.abs(o.line - z0) < 1e-3 || Math.abs(o.line - z1) < 1e-3) && o.at >= x0 && o.at <= x1
+          : (Math.abs(o.line - x0) < 1e-3 || Math.abs(o.line - x1) < 1e-3) && o.at >= z0 && o.at <= z1
+      return {
+        plan: {
+          ...s.plan,
+          rooms: s.plan.rooms.map((r) => (r.id === id ? { ...r, x: r.x + dx, z: r.z + dz } : r)),
+          openings: (s.plan.openings || []).map((o) =>
+            onEdge(o)
+              ? { ...o, line: o.line + (o.axis === 'x' ? dz : dx), at: o.at + (o.axis === 'x' ? dx : dz) }
+              : o,
+          ),
+        },
+        items: s.items.map((it) => (!it.parent && inside(it.x, it.z) ? { ...it, x: it.x + dx, z: it.z + dz } : it)),
+        dirty: true,
+      }
+    }),
+
+  /** Delete a room, the furniture in it and any opening left hanging. */
+  removeRoom: (id) => {
+    const s = get()
+    if (s.plan.rooms.length < 2) return
+    s.record()
+    const room = s.plan.rooms.find((r) => r.id === id)
+    const { x0, x1, z0, z1 } = roomRect(room)
+    const gone = new Set(
+      s.items.filter((it) => !it.parent && it.x > x0 && it.x < x1 && it.z > z0 && it.z < z1).map((it) => it.uid),
+    )
+    const plan = cleanOpenings({ ...s.plan, rooms: s.plan.rooms.filter((r) => r.id !== id) })
+    set({
+      plan,
+      items: s.items.filter((it) => !gone.has(it.uid) && !gone.has(it.parent)),
+      activeRoom: s.activeRoom === id ? null : s.activeRoom,
+      selected: null,
+      dirty: true,
+    })
+  },
+
   /** After a room shrinks, pull every floor item back inside its room. */
   fitItemsToRooms: () =>
     set((s) => ({
@@ -178,7 +231,7 @@ export const useStudio = create((set, get) => ({
 
   loadDesign: (design) =>
     set({
-      plan: design.plan || (design.room ? planFromLegacyRoom(design.room) : makePlan('room')),
+      plan: design.plan ? ensureOpenings(design.plan) : design.room ? planFromLegacyRoom(design.room) : makePlan('room'),
       items: design.items || [],
       design: { id: design.id ?? null, name: design.name || NEW_NAME },
       past: [],
@@ -190,8 +243,8 @@ export const useStudio = create((set, get) => ({
     }),
 
   /** Start from a template; optionally furnish every room automatically. */
-  newDesign: (template = 'room', { furnished = false } = {}) => {
-    const plan = makePlan(template)
+  newDesign: (template = 'room', { furnished = false, rooms: counts } = {}) => {
+    const plan = template === 'custom' ? generatePlan(counts) : makePlan(template)
     let items = []
     if (furnished && get().products.length) {
       const s = get()

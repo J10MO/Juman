@@ -20,12 +20,24 @@ const roomSchema = z.object({
   id: z.string().max(40),
   name: z.string().trim().max(40),
   type: z.string().max(20),
-  x: z.number().min(-40).max(40),
-  z: z.number().min(-40).max(40),
-  width: z.number().min(1.2).max(20),
-  depth: z.number().min(1.2).max(20),
+  x: z.number().min(-60).max(60),
+  z: z.number().min(-60).max(60),
+  width: z.number().min(1.2).max(40),
+  depth: z.number().min(1.2).max(40),
   wallColor: z.string().max(20),
   floor: z.string().max(20),
+})
+
+const openingSchema = z.object({
+  id: z.string().max(40),
+  type: z.enum(['door', 'entrance', 'window']),
+  axis: z.enum(['x', 'z']),
+  line: z.number().min(-60).max(60),
+  at: z.number().min(-60).max(60),
+  w: z.number().min(0.4).max(4),
+  h: z.number().min(0.3).max(2.6),
+  sill: z.number().min(0).max(2.2).optional(),
+  swing: z.number().optional(),
 })
 
 const designSchema = z.object({
@@ -34,7 +46,11 @@ const designSchema = z.object({
   room: z
     .object({ width: z.number(), depth: z.number(), wallColor: z.string().max(20), floor: z.string().max(20) })
     .optional(),
-  plan: z.object({ template: z.string().max(30), rooms: z.array(roomSchema).min(1).max(12) }),
+  plan: z.object({
+    template: z.string().max(30),
+    rooms: z.array(roomSchema).min(1).max(16),
+    openings: z.array(openingSchema).max(80).optional(),
+  }),
   items: z.array(itemSchema).max(400),
   thumbnail: z
     .string()

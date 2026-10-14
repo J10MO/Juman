@@ -1,17 +1,65 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { Brass, Ceramic, Clay, Cyl, Lathe, Metal, getLeafGeometry } from './materials.jsx'
-import { rng, rugTexture } from '../textures.js'
+import { rng } from '../textures.js'
+import { rugDesignTexture } from '../rugs.js'
 
 const WARM = '#ffd9a0'
 
-export function Rug({ color, dims }) {
-  const map = rugTexture(color)
+/** Tassels along both short ends of a rectangular rug. */
+function Fringes({ dims, color = '#efe3c8' }) {
+  const ref = useRef()
+  const count = Math.max(8, Math.round(dims.d / 0.022))
+  useLayoutEffect(() => {
+    const m = new THREE.Matrix4()
+    const rand = rng(3)
+    let i = 0
+    for (const side of [-1, 1]) {
+      for (let k = 0; k < count; k++) {
+        const z = -dims.d / 2 + ((k + 0.5) / count) * dims.d
+        const len = 0.045 + rand() * 0.015
+        m.makeRotationY((rand() - 0.5) * 0.25)
+        m.setPosition(side * (dims.w / 2 + len / 2), 0.002, z)
+        m.scale(new THREE.Vector3(len, 1, 1))
+        ref.current.setMatrixAt(i++, m)
+      }
+    }
+    ref.current.instanceMatrix.needsUpdate = true
+  }, [dims.w, dims.d, count])
   return (
-    <mesh position={[0, dims.h / 2, 0]} receiveShadow>
-      <boxGeometry args={[dims.w, dims.h, dims.d]} />
-      <meshStandardMaterial map={map} roughness={1} bumpMap={map} bumpScale={0.6} />
-    </mesh>
+    <instancedMesh ref={ref} args={[undefined, undefined, count * 2]} receiveShadow>
+      <boxGeometry args={[1, 0.003, 0.006]} />
+      <meshStandardMaterial color={color} roughness={1} />
+    </instancedMesh>
+  )
+}
+
+const PLUSH = new Set(['shaggy', 'beni', 'bath'])
+
+export function Rug({ color, dims, variant = 'medallion' }) {
+  const round = variant === 'round'
+  const plush = PLUSH.has(variant)
+  const map = useMemo(() => rugDesignTexture(variant, color, dims.w / dims.d), [variant, color, dims.w, dims.d])
+  const material = plush ? (
+    <meshPhysicalMaterial map={map} roughness={1} bumpMap={map} bumpScale={2.2} sheen={1} sheenRoughness={0.8} sheenColor="#ffffff" />
+  ) : (
+    <meshStandardMaterial map={map} roughness={1} bumpMap={map} bumpScale={0.7} />
+  )
+  return (
+    <group>
+      {round ? (
+        <mesh position={[0, dims.h / 2, 0]} receiveShadow>
+          <cylinderGeometry args={[dims.w / 2, dims.w / 2, dims.h, 96]} />
+          {material}
+        </mesh>
+      ) : (
+        <mesh position={[0, dims.h / 2, 0]} receiveShadow>
+          <boxGeometry args={[dims.w, dims.h, dims.d]} />
+          {material}
+        </mesh>
+      )}
+      {!round && !plush && <Fringes dims={dims} />}
+    </group>
   )
 }
 

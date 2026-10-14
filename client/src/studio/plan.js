@@ -1,14 +1,23 @@
-// House plans: rooms laid out on the floor plane, plus the walls, doors and
-// windows generated from them. Rooms are axis-aligned rectangles that share
-// edges exactly; each wall is built as two half-thickness skins so every room
-// can have its own wall colour.
+// House plans: rooms laid out on the floor plane, plus doors and windows
+// ("openings") placed on their walls. Rooms are axis-aligned rectangles that
+// share edges exactly; each wall is built as two half-thickness skins so every
+// room can have its own wall colour.
+//
+// An opening lives on a wall line:
+//   { id, type: 'door' | 'entrance' | 'window', axis: 'x' | 'z', line, at, w, h, sill? }
+//   axis 'x' → wall runs along x at z = line, `at` is the x of its centre
+//   axis 'z' → wall runs along z at x = line, `at` is the z of its centre
 
 export const WALL_T = 0.12
 export const WALL_H = 2.7
-const DOOR = { w: 0.9, h: 2.1 }
-const ENTRANCE = { w: 1.1, h: 2.2 }
+export const OPENING_DEFAULTS = {
+  door: { w: 0.9, h: 2.1 },
+  entrance: { w: 1.1, h: 2.2 },
+  window: { w: 1.4, h: 1.4, sill: 0.85 },
+}
 const EXTERIOR_COLOR = '#e4ddd0'
 const EPS = 1e-3
+const MARGIN = 0.08 // keep openings this far from wall ends
 
 export const ROOM_TYPES = {
   living: { name: 'الهول', floor: 'oak', wallColor: '#ece6dc' },
@@ -21,8 +30,11 @@ export const ROOM_TYPES = {
   hall: { name: 'الممر', floor: 'terrazzo', wallColor: '#f5f1ea' },
 }
 
+let uidCounter = 0
+const newId = (p) => `${p}${Date.now().toString(36)}${(uidCounter++).toString(36)}`
+
 /** Build a room from its edges (x0..x1, z0..z1). */
-const R = (id, type, x0, x1, z0, z1, name) => ({
+export const R = (id, type, x0, x1, z0, z1, name) => ({
   id,
   type,
   name: name || ROOM_TYPES[type].name,
@@ -39,7 +51,7 @@ export const TEMPLATES = {
     name: 'غرفة وحدة',
     blurb: 'غرفة وحدة تتحكم بقياسها. مناسبة إذا تريد ترتب الصالة أو غرفة النوم بس.',
     rooms: [R('r1', 'living', -3, 3, -2.5, 2.5, 'غرفتي')],
-    doors: [],
+    doors: [['r1', 'out:s']],
   },
   apartment: {
     name: 'شقة غرفتين',
@@ -77,13 +89,76 @@ export const TEMPLATES = {
 
 export function makePlan(templateKey) {
   const t = TEMPLATES[templateKey] || TEMPLATES.room
-  return { template: TEMPLATES[templateKey] ? templateKey : 'room', rooms: t.rooms.map((r) => ({ ...r })) }
+  const plan = { template: TEMPLATES[templateKey] ? templateKey : 'room', rooms: t.rooms.map((r) => ({ ...r })) }
+  return { ...plan, openings: defaultOpenings(plan, t.doors) }
 }
 
 /** Old single-room designs stored `room: { width, depth, wallColor, floor }`. */
 export function planFromLegacyRoom(room) {
   const r = R('r1', 'living', -room.width / 2, room.width / 2, -room.depth / 2, room.depth / 2, 'غرفتي')
-  return { template: 'room', rooms: [{ ...r, floor: room.floor || r.floor, wallColor: room.wallColor || r.wallColor }] }
+  const plan = { template: 'room', rooms: [{ ...r, floor: room.floor || r.floor, wallColor: room.wallColor || r.wallColor }] }
+  return { ...plan, openings: defaultOpenings(plan, TEMPLATES.room.doors) }
+}
+
+/** Plans saved before doors/windows were editable get their openings generated once. */
+export function ensureOpenings(plan) {
+  if (Array.isArray(plan.openings)) return plan
+  return { ...plan, openings: defaultOpenings(plan, TEMPLATES[plan.template]?.doors || []) }
+}
+
+/**
+ * A house from room counts: public rooms along the front, a corridor, and the
+ * private rooms behind it. Every room opens onto the corridor.
+ */
+export function generatePlan({ bedrooms = 2, bathrooms = 1, guest = true, office = false } = {}) {
+  const front = []
+  if (guest) front.push(['guest', 'guest', 4.6])
+  front.push(['living', 'living', 5.2], ['kitchen', 'kitchen', 3.8])
+  const back = []
+  for (let i = 0; i < bedrooms; i++) back.push([`bed${i + 1}`, i === 0 ? 'bedroom' : 'kids', i === 0 ? 4.4 : 3.6])
+  for (let i = 0; i < bathrooms; i++) back.push([`bath${i + 1}`, 'bathroom', 2.4])
+  if (office) back.push(['office', 'office', 3.2])
+
+  const sum = (row) => row.reduce((n, r) => n + r[2], 0)
+  const W = Math.max(sum(front), sum(back))
+  // stretch the shorter row: extra width goes to the living room / bedrooms
+  const stretch = (row, keys) => {
+    const extra = W - sum(row)
+    const grow = row.filter((r) => keys.includes(r[1]))
+    grow.forEach((r) => (r[2] += extra / grow.length))
+  }
+  stretch(front, ['living'])
+  stretch(back, ['bedroom', 'kids', 'office'].filter((k) => back.some((r) => r[1] === k)).slice(0, 2))
+
+  const digits = '٠١٢٣٤٥٦٧٨٩'
+  const roomName = (id, type) => {
+    const n = digits[Number(id.replace(/\D/g, ''))] || ''
+    if (id === 'bed1') return bedrooms > 1 ? 'غرفة النوم الرئيسية' : undefined
+    if (type === 'kids') return bedrooms > 2 ? `غرفة النوم ${n}` : undefined
+    if (type === 'bathroom' && bathrooms > 1) return `الحمام ${n}`
+    return undefined
+  }
+
+  const FRONT_D = 4.6
+  const HALL_D = 1.8
+  const BACK_D = 4.2
+  const z0 = -(FRONT_D + HALL_D + BACK_D) / 2
+  const rooms = []
+  const place = (row, za, zb) => {
+    let x = -W / 2
+    for (const [id, type, w] of row) {
+      rooms.push(R(id, type, x, x + w, za, zb, roomName(id, type)))
+      x += w
+    }
+  }
+  place(front, z0, z0 + FRONT_D)
+  rooms.push(R('hall', 'hall', -W / 2, W / 2, z0 + FRONT_D, z0 + FRONT_D + HALL_D))
+  place(back, z0 + FRONT_D + HALL_D, z0 + FRONT_D + HALL_D + BACK_D)
+
+  const doors = rooms.filter((r) => r.id !== 'hall').map((r) => [r.id, 'hall'])
+  doors.push(['living', 'kitchen'], [guest ? 'guest' : 'living', 'out:n'], ['hall', 'out:w'])
+  const plan = { template: 'custom', rooms }
+  return { ...plan, openings: defaultOpenings(plan, doors) }
 }
 
 export function planBounds(rooms) {
@@ -114,15 +189,21 @@ export function roomAt(rooms, x, z) {
   return best?.r || null
 }
 
+export const roomRect = (r) => ({ x0: r.x - r.width / 2, x1: r.x + r.width / 2, z0: r.z - r.depth / 2, z1: r.z + r.depth / 2 })
+
+/** Do two rooms overlap (sharing an edge is fine)? */
+export function roomsOverlap(a, b) {
+  const p = roomRect(a)
+  const q = roomRect(b)
+  return Math.min(p.x1, q.x1) - Math.max(p.x0, q.x0) > 0.01 && Math.min(p.z1, q.z1) - Math.max(p.z0, q.z0) > 0.01
+}
+
 // ---------------------------------------------------------------------------
 // Walls
 
 /** The four sides of a room as lines. `inward` points into the room. */
-function sides(r) {
-  const x0 = r.x - r.width / 2
-  const x1 = r.x + r.width / 2
-  const z0 = r.z - r.depth / 2
-  const z1 = r.z + r.depth / 2
+export function sides(r) {
+  const { x0, x1, z0, z1 } = roomRect(r)
   return [
     { side: 'n', axis: 'x', c: z0, a: x0, b: x1, inward: 1 }, // wall along x at z = z0, room is at +z
     { side: 's', axis: 'x', c: z1, a: x0, b: x1, inward: -1 },
@@ -132,7 +213,7 @@ function sides(r) {
 }
 
 /** Split a side into pieces shared with neighbours and exterior pieces. */
-function pieces(room, s, rooms) {
+export function pieces(room, s, rooms) {
   const shared = []
   for (const q of rooms) {
     if (q.id === room.id) continue
@@ -155,132 +236,187 @@ function pieces(room, s, rooms) {
   return out
 }
 
+/** Every distinct wall piece of the plan (shared walls appear once). */
+export function wallPieces(rooms) {
+  const seen = new Map()
+  for (const r of rooms) {
+    for (const s of sides(r)) {
+      for (const p of pieces(r, s, rooms)) {
+        const key = `${s.axis}:${s.c.toFixed(3)}:${p.a.toFixed(3)}:${p.b.toFixed(3)}`
+        if (!seen.has(key)) seen.set(key, { key, axis: s.axis, line: s.c, a: p.a, b: p.b, exterior: !p.neighbour, room: r, side: s })
+      }
+    }
+  }
+  return [...seen.values()]
+}
+
+/** The wall piece an opening sits on (it must fit inside it), or null. */
+export function pieceFor(op, walls) {
+  return (
+    walls.find(
+      (w) =>
+        w.axis === op.axis &&
+        Math.abs(w.line - op.line) < EPS &&
+        op.at - op.w / 2 >= w.a + MARGIN - EPS &&
+        op.at + op.w / 2 <= w.b - MARGIN + EPS,
+    ) || null
+  )
+}
+
+/** Keep `at` inside a wall piece so the opening fits. */
+export const clampOnPiece = (at, w, piece) =>
+  Math.min(piece.b - MARGIN - w / 2, Math.max(piece.a + MARGIN + w / 2, at))
+
+/** Drop openings that no longer sit on any wall (after rooms moved or were deleted). */
+export function cleanOpenings(plan) {
+  const walls = wallPieces(plan.rooms)
+  const openings = (plan.openings || []).filter((o) => pieceFor(o, walls))
+  return openings.length === (plan.openings || []).length ? plan : { ...plan, openings }
+}
+
 const pairKey = (a, b) => [a, b].sort().join('|')
 
-/**
- * Turn a plan into renderable wall skins, door/window openings and corner posts.
- * Each skin: { key, x, z, len, axis, thick, y0, y1, color, exterior, normal:[nx,nz] }
- */
-export function buildWalls(plan, doorsSpec = TEMPLATES[plan.template]?.doors || []) {
+/** Default doors (from a template's door list) and one window per room. */
+export function defaultOpenings(plan, doorsSpec = []) {
   const { rooms } = plan
   const doorPairs = new Set(doorsSpec.filter(([, b]) => !b.startsWith('out:')).map(([a, b]) => pairKey(a, b)))
   const entrances = new Set(doorsSpec.filter(([, b]) => b.startsWith('out:')).map(([a, b]) => `${a}:${b.slice(4)}`))
+  const all = []
+  for (const r of rooms) for (const s of sides(r)) for (const p of pieces(r, s, rooms)) all.push({ r, s, p, len: p.b - p.a })
 
-  // Pick the opening for each piece once, so both skins of a wall agree.
-  const openings = new Map() // pieceKey -> opening
-  const usedPairs = new Set()
-  const windowRooms = new Set()
-
-  const allPieces = []
-  for (const r of rooms) {
-    for (const s of sides(r)) {
-      for (const p of pieces(r, s, rooms)) allPieces.push({ r, s, p, len: p.b - p.a })
-    }
+  const openings = []
+  const used = new Set() // piece keys that already carry an opening
+  const keyOf = (it) => `${it.s.axis}:${it.s.c.toFixed(3)}:${it.p.a.toFixed(3)}:${it.p.b.toFixed(3)}`
+  const add = (it, type, extra = {}) => {
+    const d = OPENING_DEFAULTS[type]
+    // doors swing into the room they were generated for
+    const swing = type === 'window' ? undefined : it.s.inward
+    openings.push({ id: newId('o'), type, axis: it.s.axis, line: it.s.c, at: (it.p.a + it.p.b) / 2, ...d, swing, ...extra })
+    used.add(keyOf(it))
   }
-  const pieceKey = (s, p) => `${s.axis}:${s.c.toFixed(3)}:${p.a.toFixed(3)}:${p.b.toFixed(3)}`
 
   // doors between rooms: the longest shared piece of each requested pair
   const byPair = new Map()
-  for (const it of allPieces) {
+  for (const it of all) {
     if (!it.p.neighbour) continue
     const k = pairKey(it.r.id, it.p.neighbour)
-    if (!doorPairs.has(k)) continue
-    if (!byPair.has(k) || byPair.get(k).len < it.len) byPair.set(k, it)
+    if (doorPairs.has(k) && (!byPair.has(k) || byPair.get(k).len < it.len)) byPair.set(k, it)
   }
-  for (const [k, it] of byPair) {
-    if (it.len < DOOR.w + 0.2) continue
-    openings.set(pieceKey(it.s, it.p), { type: 'door', at: (it.p.a + it.p.b) / 2, ...DOOR })
-    usedPairs.add(k)
-  }
+  for (const it of byPair.values()) if (it.len >= OPENING_DEFAULTS.door.w + 0.2) add(it, 'door')
 
-  // exterior: entrance doors, then one window per room on its longest outside piece
-  const exterior = allPieces.filter((it) => !it.p.neighbour).sort((a, b) => b.len - a.len)
+  const exterior = all.filter((it) => !it.p.neighbour).sort((a, b) => b.len - a.len)
   for (const it of exterior) {
-    const k = pieceKey(it.s, it.p)
-    if (entrances.has(`${it.r.id}:${it.s.side}`) && !openings.has(k) && it.len >= ENTRANCE.w + 0.3) {
-      openings.set(k, { type: 'entrance', at: (it.p.a + it.p.b) / 2, ...ENTRANCE })
-      entrances.delete(`${it.r.id}:${it.s.side}`)
+    const k = `${it.r.id}:${it.s.side}`
+    if (entrances.has(k) && !used.has(keyOf(it)) && it.len >= OPENING_DEFAULTS.entrance.w + 0.3) {
+      add(it, 'entrance')
+      entrances.delete(k)
     }
   }
+  const withWindow = new Set()
   for (const it of exterior) {
-    const k = pieceKey(it.s, it.p)
-    if (openings.has(k) || windowRooms.has(it.r.id) || it.r.type === 'hall') continue
+    if (used.has(keyOf(it)) || withWindow.has(it.r.id) || it.r.type === 'hall') continue
     const bath = it.r.type === 'bathroom'
     const w = bath ? 0.7 : Math.min(1.8, it.len - 0.9)
     if (w < 0.6) continue
-    openings.set(k, bath ? { type: 'window', at: (it.p.a + it.p.b) / 2, w, sill: 1.6, h: 0.6 } : { type: 'window', at: (it.p.a + it.p.b) / 2, w, sill: 0.85, h: 1.4 })
-    windowRooms.add(it.r.id)
+    add(it, 'window', bath ? { w, sill: 1.6, h: 0.6 } : { w })
+    withWindow.add(it.r.id)
   }
+  return openings
+}
+
+/**
+ * Turn a plan into renderable wall skins, door/window frames and corner posts.
+ * Each skin: { key, group, x, z, len, axis, y0, y1, color, exterior, normal:[nx,nz] }
+ */
+export function buildWalls(plan) {
+  const { rooms } = plan
+  const openings = ensureOpenings(plan).openings
+  const walls = wallPieces(rooms)
+  const onPiece = new Map() // piece key -> openings sorted along the wall
+  for (const op of openings) {
+    const piece = pieceFor(op, walls)
+    if (!piece) continue
+    if (!onPiece.has(piece.key)) onPiece.set(piece.key, [])
+    onPiece.get(piece.key).push(op)
+  }
+  for (const list of onPiece.values()) list.sort((a, b) => a.at - b.at)
 
   const skins = []
-  const decor = [] // door/window frames, rendered once per opening
+  const decor = []
   const seenDecor = new Set()
-  for (const { r, s, p } of allPieces) {
-    const k = pieceKey(s, p)
-    const op = openings.get(k)
-    const ext = !p.neighbour
-    const outward = [s.axis === 'z' ? -s.inward : 0, s.axis === 'x' ? -s.inward : 0]
-    const emit = (side, color) => {
-      // side: +1 = inner skin (inside r), -1 = outer skin
-      const offset = s.c + s.inward * side * (WALL_T / 4)
-      const push = (a, b, y0, y1, part) => {
-        if (b - a < EPS || y1 - y0 < EPS) return
-        const mid = (a + b) / 2
-        skins.push({
-          key: `${r.id}:${k}:${side}:${part}:${a.toFixed(3)}:${y0}`,
-          group: k,
-          x: s.axis === 'x' ? mid : offset,
-          z: s.axis === 'x' ? offset : mid,
-          len: b - a,
-          axis: s.axis,
-          y0,
-          y1,
-          color,
-          exterior: ext,
-          normal: outward,
-          line: s.c,
-        })
+  for (const r of rooms) {
+    for (const s of sides(r)) {
+      for (const p of pieces(r, s, rooms)) {
+        const k = `${s.axis}:${s.c.toFixed(3)}:${p.a.toFixed(3)}:${p.b.toFixed(3)}`
+        const ops = onPiece.get(k) || []
+        const ext = !p.neighbour
+        const outward = [s.axis === 'z' ? -s.inward : 0, s.axis === 'x' ? -s.inward : 0]
+        const emit = (side, color) => {
+          // side: +1 = inner skin (inside r), -1 = outer skin
+          const offset = s.c + s.inward * side * (WALL_T / 4)
+          let n = 0
+          const push = (a, b, y0, y1) => {
+            if (b - a < EPS || y1 - y0 < EPS) return
+            const mid = (a + b) / 2
+            skins.push({
+              key: `${r.id}:${k}:${side}:${n++}`,
+              group: k,
+              x: s.axis === 'x' ? mid : offset,
+              z: s.axis === 'x' ? offset : mid,
+              len: b - a,
+              axis: s.axis,
+              y0,
+              y1,
+              color,
+              exterior: ext,
+              normal: outward,
+            })
+          }
+          let cursor = p.a
+          for (const op of ops) {
+            const o0 = op.at - op.w / 2
+            const o1 = op.at + op.w / 2
+            push(cursor, o0, 0, WALL_H)
+            if (op.type === 'window') {
+              push(o0, o1, 0, op.sill)
+              push(o0, o1, op.sill + op.h, WALL_H)
+            } else {
+              push(o0, o1, op.h, WALL_H)
+            }
+            cursor = o1
+          }
+          push(cursor, p.b, 0, WALL_H)
+        }
+        emit(1, r.wallColor)
+        if (ext) emit(-1, EXTERIOR_COLOR)
+        for (const op of ops) {
+          if (seenDecor.has(op.id)) continue
+          seenDecor.add(op.id)
+          decor.push({
+            ...op,
+            key: op.id,
+            group: k,
+            x: s.axis === 'x' ? op.at : s.c,
+            z: s.axis === 'x' ? s.c : op.at,
+            exterior: ext,
+            normal: outward,
+            // swing doors into the room they belong to
+            inward: op.swing ?? s.inward,
+          })
+        }
       }
-      if (!op) return push(p.a, p.b, 0, WALL_H, 'full')
-      const o0 = op.at - op.w / 2
-      const o1 = op.at + op.w / 2
-      push(p.a, o0, 0, WALL_H, 'l')
-      push(o1, p.b, 0, WALL_H, 'r')
-      if (op.type === 'window') {
-        push(o0, o1, 0, op.sill, 'sill')
-        push(o0, o1, op.sill + op.h, WALL_H, 'top')
-      } else {
-        push(o0, o1, op.h, WALL_H, 'top')
-      }
-    }
-    emit(1, r.wallColor)
-    if (ext) emit(-1, EXTERIOR_COLOR)
-    if (op && !seenDecor.has(k)) {
-      seenDecor.add(k)
-      decor.push({
-        key: k,
-        ...op,
-        axis: s.axis,
-        x: s.axis === 'x' ? op.at : s.c,
-        z: s.axis === 'x' ? s.c : op.at,
-        exterior: ext,
-        normal: outward,
-        // swing doors into the room they belong to
-        inward: s.inward,
-      })
     }
   }
 
   // corner posts fill the gaps where skins meet
   const posts = new Map()
   for (const r of rooms) {
-    for (const [x, z] of [
-      [r.x - r.width / 2, r.z - r.depth / 2], [r.x + r.width / 2, r.z - r.depth / 2],
-      [r.x - r.width / 2, r.z + r.depth / 2], [r.x + r.width / 2, r.z + r.depth / 2],
-    ]) {
-      posts.set(`${x.toFixed(3)}:${z.toFixed(3)}`, { x, z })
-    }
+    const { x0, x1, z0, z1 } = roomRect(r)
+    for (const [x, z] of [[x0, z0], [x1, z0], [x0, z1], [x1, z1]]) posts.set(`${x.toFixed(3)}:${z.toFixed(3)}`, { x, z })
   }
 
-  return { skins, decor, posts: [...posts.values()], usedPairs }
+  return { skins, decor, posts: [...posts.values()] }
 }
+
+export const newOpeningId = () => newId('o')
+export const newRoomId = () => newId('r')

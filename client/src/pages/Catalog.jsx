@@ -6,6 +6,8 @@ import { ErrorState, Loading } from '../components/States.jsx'
 import { useApi } from '../lib/useApi.js'
 import { formatNumber } from '../lib/format.js'
 
+const PER_SECTION = 8
+
 function sortProducts(list, sort) {
   if (sort === 'price-asc') return [...list].sort((a, b) => a.price - b.price)
   if (sort === 'price-desc') return [...list].sort((a, b) => b.price - a.price)
@@ -40,6 +42,8 @@ export default function Catalog() {
   }
 
   const total = cats.data?.categories.reduce((n, c) => n + c.productCount, 0)
+  // with no filter at all, show the catalogue organised by category
+  const grouped = !category && !source && !debounced && sort === 'default'
 
   return (
     <div className="container">
@@ -92,7 +96,33 @@ export default function Catalog() {
           </select>
         </div>
       )}
-      {products.data &&
+      {grouped && products.data && cats.data ? (
+        <div className="cat-sections">
+          {cats.data.categories.map((c) => {
+            const list = products.data.products.filter((p) => p.categorySlug === c.slug)
+            if (!list.length) return null
+            return (
+              <section key={c.slug} className="cat-section" id={`cat-${c.slug}`}>
+                <div className="cat-section-head">
+                  <div>
+                    <h2>{c.name}</h2>
+                    <p className="muted">{c.blurb}</p>
+                  </div>
+                  <button className="btn btn-ghost btn-sm" onClick={() => setCategory(c.slug)}>
+                    شوف الكل ({formatNumber(list.length)})
+                    <Icon name="arrow" size={16} />
+                  </button>
+                </div>
+                <div className="grid">
+                  {list.slice(0, PER_SECTION).map((p) => (
+                    <ProductCard key={p.id} product={p} />
+                  ))}
+                </div>
+              </section>
+            )
+          })}
+        </div>
+      ) : products.data &&
         (products.data.products.length ? (
           <div className="grid" style={{ opacity: products.loading ? 0.6 : 1, transition: 'opacity .2s' }}>
             {sortProducts(products.data.products, sort).map((p) => (

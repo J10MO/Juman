@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Icon } from '../components/Icon.jsx'
 import { Swatches } from '../components/ProductCard.jsx'
 import { colorName, formatNumber, formatPrice } from '../lib/format.js'
 import { FLOOR_NAMES } from '../three/textures.js'
 import { WALL_COLORS, useStudio } from './store.js'
-import { TEMPLATES, roomArea } from './plan.js'
+import { TEMPLATES, generatePlan, roomArea } from './plan.js'
 
 const Q = Math.PI / 4
 const WALL_MODES = {
@@ -29,6 +29,10 @@ export function Toolbar({ onSave, saving, onSettings, settingsOpen, onShot }) {
         />
         <button className="icon-btn" data-tip="تصميم جديد / بيت كامل" onClick={() => s.setOption('templatePicker', true)}>
           <Icon name="home" size={18} />
+        </button>
+        <button className="btn btn-sm plan-btn" onClick={() => s.setOption('planEditor', true)}>
+          <Icon name="plan" size={16} />
+          <span>عدّل المخطط</span>
         </button>
         <span className="sep" />
         <button className="icon-btn" data-tip="تراجع (Ctrl+Z)" onClick={s.undo} disabled={!s.past.length}>
@@ -192,6 +196,16 @@ export function SettingsPanel({ onClose }) {
         </div>
       )}
 
+      <button
+        className="btn btn-sm btn-ghost"
+        style={{ width: '100%', marginBottom: 12 }}
+        onClick={() => {
+          onClose()
+          setOption('planEditor', true)
+        }}
+      >
+        <Icon name="plan" size={16} /> الغرف والأبواب والشبابيك
+      </button>
       <div className="field">
         <label>اسم الغرفة</label>
         <input
@@ -250,30 +264,78 @@ export function SettingsPanel({ onClose }) {
 
 const TEMPLATE_ICONS = { room: '▢', apartment: '▦', house: '⌂' }
 
+const COUNT_LIMITS = { bedrooms: [1, 4], bathrooms: [1, 3] }
+
+function Counter({ label, value, onChange, min, max }) {
+  return (
+    <div className="stepper">
+      <span>{label}</span>
+      <button type="button" disabled={value <= min} onClick={() => onChange(value - 1)} aria-label={`نقّص ${label}`}>
+        <Icon name="minus" size={14} />
+      </button>
+      <strong>{formatNumber(value)}</strong>
+      <button type="button" disabled={value >= max} onClick={() => onChange(value + 1)} aria-label={`زيد ${label}`}>
+        <Icon name="plus" size={14} />
+      </button>
+    </div>
+  )
+}
+
 export function TemplatePicker() {
   const open = useStudio((s) => s.templatePicker)
   const hasProducts = useStudio((s) => s.products.length > 0)
   const itemCount = useStudio((s) => s.items.length)
-  const [choice, setChoice] = useState('house')
+  const [choice, setChoice] = useState('custom')
   const [furnished, setFurnished] = useState(true)
+  const [counts, setCounts] = useState({ bedrooms: 3, bathrooms: 1, guest: true, office: false })
+  const custom = useMemo(() => generatePlan(counts), [counts])
   if (!open) return null
   const close = () => useStudio.setState({ templatePicker: false })
+  const set = (k) => (v) => setCounts((c) => ({ ...c, [k]: v }))
+  const area = (rooms) => formatNumber(Math.round(rooms.reduce((n, r) => n + roomArea(r), 0)))
   return (
     <div className="modal-back" onClick={close}>
       <div className="modal template-modal" onClick={(e) => e.stopPropagation()}>
         <h3>شنو تريد تصمم؟</h3>
-        <p className="muted">اختار غرفة وحدة، شقة، أو بيت كامل بكل غرفه. تگدر تخلي جُمان يأثثه إلك، وبعدين تغيّر اللي يعجبك.</p>
+        <p className="muted">
+          اختار عدد الغرف وجُمان يرسم إلك المخطط، أو ابدي من قالب جاهز. بعدين تگدر تحرك الغرف والأبواب والشبابيك على كيفك.
+        </p>
+
+        <div
+          role="button"
+          tabIndex={0}
+          className={`template-card custom-card ${choice === 'custom' ? 'active' : ''}`}
+          onClick={() => setChoice('custom')}
+        >
+          <PlanPreview rooms={custom.rooms} />
+          <div className="custom-body">
+            <strong>✦ بيتك حسب عدد الغرف</strong>
+            <span>
+              {formatNumber(custom.rooms.length)} غرف · {area(custom.rooms)} م²
+            </span>
+            <div className="counts">
+              <Counter label="غرف النوم" value={counts.bedrooms} onChange={set('bedrooms')} min={COUNT_LIMITS.bedrooms[0]} max={COUNT_LIMITS.bedrooms[1]} />
+              <Counter label="الحمامات" value={counts.bathrooms} onChange={set('bathrooms')} min={COUNT_LIMITS.bathrooms[0]} max={COUNT_LIMITS.bathrooms[1]} />
+              <label className="check">
+                <input type="checkbox" checked={counts.guest} onChange={(e) => set('guest')(e.target.checked)} /> ديوانية للخطار
+              </label>
+              <label className="check">
+                <input type="checkbox" checked={counts.office} onChange={(e) => set('office')(e.target.checked)} /> مكتب
+              </label>
+            </div>
+          </div>
+        </div>
+
         <div className="template-grid">
           {Object.entries(TEMPLATES).map(([key, t]) => (
             <button key={key} className={`template-card ${choice === key ? 'active' : ''}`} onClick={() => setChoice(key)}>
-              <PlanPreview template={key} />
+              <PlanPreview rooms={t.rooms} />
               <strong>
                 {TEMPLATE_ICONS[key]} {t.name}
               </strong>
               <span>{t.blurb}</span>
               <small>
-                {formatNumber(t.rooms.length)} {t.rooms.length === 1 ? 'غرفة' : 'غرف'} ·{' '}
-                {formatNumber(Math.round(t.rooms.reduce((n, r) => n + roomArea(r), 0)))} م²
+                {formatNumber(t.rooms.length)} {t.rooms.length === 1 ? 'غرفة' : 'غرف'} · {area(t.rooms)} م²
               </small>
             </button>
           ))}
@@ -297,7 +359,7 @@ export function TemplatePicker() {
           <button
             className="btn btn-gold"
             disabled={!hasProducts}
-            onClick={() => useStudio.getState().newDesign(choice, { furnished })}
+            onClick={() => useStudio.getState().newDesign(choice, { furnished, rooms: counts })}
           >
             يلا نبدي
           </button>
@@ -308,8 +370,7 @@ export function TemplatePicker() {
 }
 
 /** Tiny SVG floor plan of a template. */
-function PlanPreview({ template }) {
-  const rooms = TEMPLATES[template].rooms
+function PlanPreview({ rooms }) {
   const xs = rooms.flatMap((r) => [r.x - r.width / 2, r.x + r.width / 2])
   const zs = rooms.flatMap((r) => [r.z - r.depth / 2, r.z + r.depth / 2])
   const minX = Math.min(...xs)
