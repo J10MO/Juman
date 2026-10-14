@@ -30,6 +30,7 @@ const products = [
         credit: m.credit,
         source_url: m.source,
         sort: 100 + i,
+        active: !p.retired,
       }
     }),
 ]
@@ -88,19 +89,19 @@ async function migrateAndSeed() {
     for (const p of products) {
       await client.query(
         `INSERT INTO products (slug, name, description, category_id, price, model_key, colors, dims, kind, surface_height,
-                               featured, sort, model_url, image_url, material, credit, source_url)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+                               featured, sort, model_url, image_url, material, credit, source_url, active)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
          ON CONFLICT (slug) DO UPDATE SET
            name = EXCLUDED.name, description = EXCLUDED.description, category_id = EXCLUDED.category_id,
            price = EXCLUDED.price, model_key = EXCLUDED.model_key, colors = EXCLUDED.colors, dims = EXCLUDED.dims,
            kind = EXCLUDED.kind, surface_height = EXCLUDED.surface_height, featured = EXCLUDED.featured, sort = EXCLUDED.sort,
            model_url = EXCLUDED.model_url, image_url = EXCLUDED.image_url, material = EXCLUDED.material,
-           credit = EXCLUDED.credit, source_url = EXCLUDED.source_url`,
+           credit = EXCLUDED.credit, source_url = EXCLUDED.source_url, active = EXCLUDED.active`,
         [
           p.slug, p.name, p.description, categoryIds[p.category], p.price, p.model_key,
           JSON.stringify(p.colors), JSON.stringify(p.dims), p.kind, p.surface_height ?? null,
           Boolean(p.featured), p.sort ?? 0, p.model_url ?? null, p.image_url ?? null, p.material ?? null,
-          p.credit ?? null, p.source_url ?? null,
+          p.credit ?? null, p.source_url ?? null, p.active !== false,
         ],
       )
     }

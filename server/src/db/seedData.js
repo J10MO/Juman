@@ -261,4 +261,127 @@ export const products = [
     colors: ['#b7c4cf', '#e9e4dc', '#9db8a0'], dims: { w: 0.8, d: 0.5, h: 0.015 },
     kind: 'rug', sort: 12, material: 'قطن ١٠٠٪',
   },
+
+  // ---------- contemporary collection (built in code) ----------
+  // stone colours: #f1efeb carrara, #1d1d1f nero, #2f4a3e verde, #e9d6cc rosa, #d9c7aa travertine
+  {
+    slug: 'nuvola-sofa', name: 'قنفة نوفولا بوكليه', category: 'living', price: 1950000, model_key: 'modern-sofa',
+    description: 'قنفة واطية وعميقة بقماش بوكليه ناعم ومخدات منفوشة. ستايل عصري هادي، تگعد بيها وتغطس.',
+    colors: ['#eae4d8', '#a9b5a0', '#c9b49a', '#6f7a86'], dims: { w: 2.4, d: 1.0, h: 0.76 },
+    kind: 'floor', featured: true, sort: 0, material: 'قماش بوكليه وإسفنج عالي الكثافة',
+  },
+  {
+    slug: 'corner-sectional', name: 'قنفة زاوية L', category: 'living', price: 3200000, model_key: 'sectional',
+    description: 'قنفة زاوية كبيرة ويا شيزلونگ تمد عليه رجلك. تلم العايلة كلها قدام التلفزيون.',
+    colors: ['#d8d2c6', '#8a8f96', '#b9a48a', '#4f5b4a'], dims: { w: 2.9, d: 1.75, h: 0.78 },
+    kind: 'floor', featured: true, sort: 0, material: 'قماش كتان مضاد للبقع',
+  },
+  {
+    slug: 'luna-chair', name: 'كرسي لونا المدور', category: 'living', price: 720000, model_key: 'curve-chair',
+    description: 'كرسي مدور ناعم بقماش بوكليه، يحتضنك من كل الجهات. قطعة تخطف العين بأي زاوية.',
+    colors: ['#efe9de', '#c9b49a', '#a9b5a0', '#e3c9c0'], dims: { w: 0.82, d: 0.82, h: 0.74 },
+    kind: 'floor', featured: true, sort: 0, material: 'بوكليه وإطار خشب صلب',
+  },
+  {
+    slug: 'cloud-pouf', name: 'بف غيمة', category: 'living', price: 180000, model_key: 'boucle-pouf',
+    description: 'بف مدور منفوش مثل الغيمة، للگعدة الزايدة أو تحط عليه رجلك.',
+    colors: ['#efe9de', '#c9b49a', '#a9b5a0'], dims: { w: 0.55, d: 0.55, h: 0.4 },
+    kind: 'floor', sort: 0, material: 'بوكليه',
+  },
+  {
+    slug: 'marble-coffee-table', name: 'ميز وسط مرمر', category: 'living', price: 980000, model_key: 'marble-coffee',
+    description: 'ميز وسط بسطح مرمر سميك على قاعدتين مدورات. ثقيل وفخم ويعيش عمر.',
+    colors: ['#f1efeb', '#d9c7aa', '#1d1d1f', '#2f4a3e'], dims: { w: 1.25, d: 0.65, h: 0.34 },
+    kind: 'floor', surface_height: 0.34, featured: true, sort: 0, material: 'مرمر طبيعي',
+  },
+  {
+    slug: 'nesting-stone-tables', name: 'ميزات متداخلة حجر', category: 'living', price: 640000, model_key: 'nesting-tables',
+    description: 'ميزين مدورات واحد يدخل جوة الثاني. تفتحهن من يجون الخطار وتلمهن بعدين.',
+    colors: ['#d9c7aa', '#f1efeb', '#e9d6cc'], dims: { w: 1.1, d: 0.8, h: 0.42 },
+    kind: 'floor', surface_height: 0.42, sort: 0, material: 'ترافرتين ومرمر',
+  },
+  {
+    slug: 'arc-floor-lamp', name: 'فانوس قوس', category: 'decor', price: 390000, model_key: 'arc-lamp',
+    description: 'فانوس أرضي بقوس ستيل يوصل فوگ القنفة، وقاعدة مرمر أسود. يضوي بالليل ضوي دافي.',
+    colors: ['#c8a45c', '#1b1b1d', '#efe9de'], dims: { w: 0.32, d: 0.32, h: 2.05 },
+    kind: 'floor', featured: true, sort: 0, material: 'ستيل ومرمر',
+  },
+  {
+    slug: 'fluted-tv-wall', name: 'وحدة تلفزيون جدارية', category: 'living', price: 1650000, model_key: 'tv-wall',
+    description: 'جدار خشب مخدد ويا كابينة معلگة وإضاءة مخفية جوة. تخفي الأسلاك وتخلي الصالة كأنها فندق.',
+    colors: ['#c9a377', '#8a5a3b', '#3b2a20'], dims: { w: 2.4, d: 0.42, h: 2.2 },
+    kind: 'floor', featured: true, sort: 0, material: 'خشب جوز وطبقة ترافرتين',
+  },
+  {
+    slug: 'fluted-sideboard', name: 'بوفيه مخدد عصري', category: 'living', price: 920000, model_key: 'sideboard',
+    description: 'بوفيه واطي بأبواب خشب مخدد وسطح ترافرتين. البديل العصري لبوفيه أبو زجاج.',
+    colors: ['#c9a377', '#8a5a3b', '#3b2a20'], dims: { w: 1.8, d: 0.45, h: 0.78 },
+    kind: 'floor', surface_height: 0.78, sort: 0, material: 'خشب بلوط وترافرتين',
+  },
+  {
+    slug: 'linen-platform-bed', name: 'سرير منصة كتان', category: 'bedroom', price: 1450000, model_key: 'platform-bed',
+    description: 'سرير واطي بظهر منجّد بقنوات طولية. تصميم هادي ونومة مريحة.',
+    colors: ['#d8d2c6', '#b9a48a', '#7d8a7a', '#3e4a5a'], dims: { w: 1.9, d: 2.2, h: 1.15 },
+    kind: 'floor', featured: true, sort: 0, material: 'قماش كتان ومرتبة طبية',
+  },
+  {
+    slug: 'oak-nightstand', name: 'كومودينو بلوط عصري', category: 'bedroom', price: 230000, model_key: 'modern-nightstand',
+    description: 'كومودينو بحواف مدورة على رجول نحاسية رفيعة. يجي يم السرير ويحمل الفانوس والكتاب.',
+    colors: ['#c9a377', '#8a5a3b', '#efe9de'], dims: { w: 0.5, d: 0.4, h: 0.55 },
+    kind: 'floor', surface_height: 0.55, sort: 0, material: 'خشب بلوط ونحاس',
+  },
+  {
+    slug: 'sliding-wardrobe', name: 'كنتور أبواب سحّابة', category: 'bedroom', price: 1350000, model_key: 'sliding-wardrobe',
+    description: 'كنتور بأبواب سحّابة، باب خشب وباب مراية برونزية. يوفر مكان ويكبّر الغرفة.',
+    colors: ['#c9a377', '#efe9de', '#3b2a20'], dims: { w: 2.0, d: 0.62, h: 2.4 },
+    kind: 'floor', sort: 0, material: 'خشب ومراية برونزية',
+  },
+  {
+    slug: 'arch-mirror', name: 'مراية قوس أرضية', category: 'decor', price: 260000, model_key: 'floor-mirror',
+    description: 'مراية طويلة بإطار ذهبي على شكل قوس، تتسند على الحايط وتكبّر الغرفة.',
+    colors: ['#c8a45c', '#1b1b1d', '#c9ccd1'], dims: { w: 0.7, d: 0.12, h: 1.8 },
+    kind: 'floor', sort: 0, material: 'مراية وإطار معدن',
+  },
+  {
+    slug: 'oval-marble-dining', name: 'ميز طعام مرمر بيضوي', category: 'dining', price: 2400000, model_key: 'marble-dining',
+    description: 'ميز طعام بيضوي بسطح مرمر وقاعدتين منحوتات. لثمانية أشخاص، وقطعة فنية بنص البيت.',
+    colors: ['#f1efeb', '#d9c7aa', '#1d1d1f', '#2f4a3e'], dims: { w: 2.2, d: 1.05, h: 0.75 },
+    kind: 'floor', surface_height: 0.75, featured: true, sort: 0, material: 'مرمر طبيعي',
+  },
+  {
+    slug: 'shell-dining-chair', name: 'كرسي صدفة', category: 'dining', price: 210000, model_key: 'shell-chair',
+    description: 'كرسي طعام بقشرة منحنية على رجول بلوط ومخدة ناعمة. خفيف وعملي وبألوان هادية.',
+    colors: ['#efe9de', '#a9b5a0', '#c9b49a', '#3e4a5a'], dims: { w: 0.52, d: 0.54, h: 0.8 },
+    kind: 'floor', sort: 0, material: 'بلاستك مقوّى ورجول بلوط',
+  },
+  {
+    slug: 'waterfall-island', name: 'جزيرة مطبخ مرمر', category: 'kitchen', price: 2900000, model_key: 'kitchen-island',
+    description: 'جزيرة مطبخ بمرمر نازل على الجهتين وواجهة خشب مخدد. تحضّر الأكل عليها وتفطر يمها.',
+    colors: ['#f1efeb', '#1d1d1f', '#2f4a3e'], dims: { w: 2.2, d: 0.95, h: 0.92 },
+    kind: 'floor', surface_height: 0.92, featured: true, sort: 0, material: 'مرمر وخشب بلوط',
+  },
+  {
+    slug: 'counter-stool', name: 'كرسي بار بوكليه', category: 'kitchen', price: 160000, model_key: 'modern-stool',
+    description: 'كرسي عالي بگعدة بوكليه مدورة ورجول حديد سود. ينحط يم الجزيرة.',
+    colors: ['#efe9de', '#c9b49a', '#6f7a86'], dims: { w: 0.42, d: 0.42, h: 0.75 },
+    kind: 'floor', sort: 0, material: 'بوكليه وحديد',
+  },
+  {
+    slug: 'oak-sled-desk', name: 'ميز مكتب بلوط', category: 'office', price: 560000, model_key: 'modern-desk',
+    description: 'ميز مكتب بسطح بلوط ورجول حديد سود ومجرى للأسلاك. للشغل من البيت براحة.',
+    colors: ['#c9a377', '#efe9de', '#3b2a20'], dims: { w: 1.4, d: 0.7, h: 0.75 },
+    kind: 'floor', surface_height: 0.75, featured: true, sort: 0, material: 'خشب بلوط وحديد',
+  },
+  {
+    slug: 'ergo-chair', name: 'كرسي مكتب طبي', category: 'office', price: 380000, model_key: 'office-chair',
+    description: 'كرسي مكتب بظهر شبك يتنفس ومساند إيد وعجلات. يريح ظهرك بالساعات الطويلة.',
+    colors: ['#2b2b2b', '#6f7a86', '#efe9de'], dims: { w: 0.66, d: 0.66, h: 1.15 },
+    kind: 'floor', sort: 0, material: 'شبك وقماش وألمنيوم',
+  },
+  {
+    slug: 'open-shelf', name: 'رفوف مفتوحة حديد', category: 'office', price: 420000, model_key: 'modern-shelf',
+    description: 'رفوف مفتوحة بإطار حديد أسود ورفوف خشب، ويا كتب وتحف جاهزة.',
+    colors: ['#c9a377', '#3b2a20', '#efe9de'], dims: { w: 1.2, d: 0.36, h: 1.85 },
+    kind: 'floor', sort: 0, material: 'حديد وخشب',
+  },
 ]

@@ -9,6 +9,11 @@ import { FloorLamp, OliveTree, Rug, SmallPlant, TableLamp, Vase } from './decor.
 import {
   AirCooler, Bathtub, FloorFan, Fridge, Heater, KitchenCounter, Stove, Toilet, Vanity, WashingMachine,
 } from './appliances.jsx'
+import {
+  ArcLamp, BouclePouf, CurveChair, FloorMirror, KitchenIsland, MarbleCoffee, MarbleDining, ModernDesk, ModernNightstand,
+  ModernShelf, ModernSofa, ModernStool, NestingTables, OfficeChair, PlatformBed, Sectional, ShellChair, Sideboard,
+  SlidingWardrobe, TvWall,
+} from './modern.jsx'
 
 export const MODELS = {
   sofa: Sofa,
@@ -40,6 +45,26 @@ export const MODELS = {
   'air-cooler': AirCooler,
   heater: Heater,
   'floor-fan': FloorFan,
+  'modern-sofa': ModernSofa,
+  sectional: Sectional,
+  'curve-chair': CurveChair,
+  'boucle-pouf': BouclePouf,
+  'nesting-tables': NestingTables,
+  'marble-coffee': MarbleCoffee,
+  'arc-lamp': ArcLamp,
+  'tv-wall': TvWall,
+  sideboard: Sideboard,
+  'platform-bed': PlatformBed,
+  'modern-nightstand': ModernNightstand,
+  'sliding-wardrobe': SlidingWardrobe,
+  'floor-mirror': FloorMirror,
+  'marble-dining': MarbleDining,
+  'shell-chair': ShellChair,
+  'kitchen-island': KitchenIsland,
+  'modern-stool': ModernStool,
+  'modern-desk': ModernDesk,
+  'office-chair': OfficeChair,
+  'modern-shelf': ModernShelf,
 }
 
 /** A real, photo-scanned model (GLB). Each instance gets its own scene graph. */

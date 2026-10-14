@@ -918,5 +918,25 @@
     "credit": "Josh Dean",
     "source": "https://polyhaven.com/a/wooden_candlestick",
     "license": "CC0"
+  },
+  "steel-oak-shelves": {
+    "dims": {
+      "w": 2.351,
+      "d": 0.721,
+      "h": 2.312
+    },
+    "credit": "Ulan Cabanilla",
+    "source": "https://polyhaven.com/a/steel_frame_shelves_03",
+    "license": "CC0"
+  },
+  "clay-modern-vase": {
+    "dims": {
+      "w": 0.218,
+      "d": 0.218,
+      "h": 0.309
+    },
+    "credit": "James Ray Cock",
+    "source": "https://polyhaven.com/a/ceramic_vase_02",
+    "license": "CC0"
   }
 }

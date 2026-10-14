@@ -248,7 +248,7 @@ export const useStudio = create((set, get) => ({
     let items = []
     if (furnished && get().products.length) {
       const s = get()
-      items = furnishPlan(plan, s.products, s.productMap)
+      items = furnishPlan(plan, s.products.filter((p) => p.active !== false), s.productMap)
       items.forEach((it, i) => !it.parent && spawnPoses.set(it.uid, { x: it.x, y: 1.2 + (i % 5) * 0.25, z: it.z }))
     }
     set((s) => ({

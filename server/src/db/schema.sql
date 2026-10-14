@@ -80,3 +80,6 @@ CREATE TABLE IF NOT EXISTS orders (
 );
 
 CREATE INDEX IF NOT EXISTS orders_user_idx ON orders(user_id, created_at DESC);
+
+-- v4: products can be retired from the shop but stay resolvable for old designs
+ALTER TABLE products ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT true;

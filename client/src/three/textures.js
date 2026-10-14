@@ -270,3 +270,98 @@ function diamond(ctx, x, y, r, squash = 1) {
 
 /** Tiny deterministic RNG helper for models (books, leaves…). */
 export const rng = seeded
+
+// ---------------------------------------------------------------------------
+// Modern materials
+
+const MARBLES = {
+  carrara: { base: '#f1efeb', vein: 'rgba(120,118,115,', fine: 'rgba(150,148,145,' },
+  nero: { base: '#1d1d1f', vein: 'rgba(235,232,225,', fine: 'rgba(200,198,190,' },
+  verde: { base: '#2f4a3e', vein: 'rgba(225,235,225,', fine: 'rgba(160,190,170,' },
+  rosa: { base: '#e9d6cc', vein: 'rgba(150,110,95,', fine: 'rgba(190,150,135,' },
+}
+
+/** A single marble slab (not tiled): soft cloudy base with branching veins. */
+export function marbleTexture(kind = 'carrara') {
+  const m = MARBLES[kind] || MARBLES.carrara
+  return canvasTexture(`marble-${kind}`, [1024, 1024], (ctx, w, h) => {
+    const rand = seeded(kind.length * 97)
+    ctx.fillStyle = m.base
+    ctx.fillRect(0, 0, w, h)
+    // cloudy depth
+    for (let i = 0; i < 40; i++) {
+      const g = ctx.createRadialGradient(rand() * w, rand() * h, 0, rand() * w, rand() * h, 120 + rand() * 260)
+      g.addColorStop(0, m.fine + '0.06)')
+      g.addColorStop(1, m.fine + '0)')
+      ctx.fillStyle = g
+      ctx.fillRect(0, 0, w, h)
+    }
+    const vein = (alpha, width, steps, blur) => {
+      ctx.filter = blur ? `blur(${blur}px)` : 'none'
+      ctx.strokeStyle = m.vein + alpha + ')'
+      ctx.lineWidth = width
+      ctx.lineCap = 'round'
+      let x = rand() * w
+      let y = -20
+      let a = Math.PI / 2 + (rand() - 0.5) * 1.2
+      ctx.beginPath()
+      ctx.moveTo(x, y)
+      for (let i = 0; i < steps; i++) {
+        a += (rand() - 0.5) * 0.5
+        x += Math.cos(a) * 14
+        y += Math.abs(Math.sin(a)) * 14 + 2
+        ctx.lineTo(x, y)
+        if (rand() < 0.04) {
+          // branch
+          ctx.moveTo(x, y)
+        }
+      }
+      ctx.stroke()
+    }
+    for (let i = 0; i < 5; i++) vein(0.35, 6 + rand() * 6, 90, 4)
+    for (let i = 0; i < 7; i++) vein(0.55, 1.2 + rand() * 1.5, 90, 0)
+    for (let i = 0; i < 14; i++) vein(0.25, 0.6, 70, 0)
+    ctx.filter = 'none'
+  })
+}
+
+/** Travertine: warm beige with horizontal bands and small pores. */
+export function travertineTexture() {
+  return canvasTexture('travertine', [1024, 1024], (ctx, w, h) => {
+    const rand = seeded(55)
+    ctx.fillStyle = '#d9c7aa'
+    ctx.fillRect(0, 0, w, h)
+    for (let y = 0; y < h; y += 2) {
+      ctx.fillStyle = `rgba(${150 + rand() * 60},${125 + rand() * 50},${90 + rand() * 40},${0.05 + rand() * 0.08})`
+      ctx.fillRect(0, y + Math.sin(y * 0.05) * 3, w, 1 + rand() * 4)
+    }
+    for (let i = 0; i < 900; i++) {
+      ctx.fillStyle = `rgba(120,95,65,${0.15 + rand() * 0.3})`
+      ctx.beginPath()
+      ctx.ellipse(rand() * w, rand() * h, 1 + rand() * 7, 0.5 + rand() * 1.4, 0, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  })
+}
+
+/** Bouclé: tiny loops of yarn (bump map). */
+export function boucleBump() {
+  return canvasTexture(
+    'boucle',
+    [512, 512],
+    (ctx, w, h) => {
+      const rand = seeded(77)
+      ctx.fillStyle = '#7a7a7a'
+      ctx.fillRect(0, 0, w, h)
+      for (let i = 0; i < 9000; i++) {
+        const r = 1.5 + rand() * 2.5
+        ctx.strokeStyle = rand() < 0.5 ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.35)'
+        ctx.lineWidth = 0.8 + rand()
+        ctx.beginPath()
+        ctx.arc(rand() * w, rand() * h, r, 0, Math.PI * 2)
+        ctx.stroke()
+      }
+    },
+    { color: false, repeat: [5, 5] },
+  )
+}

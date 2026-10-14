@@ -42,7 +42,9 @@ function Piece({ product }) {
 }
 
 export function Sidebar() {
-  const products = useStudio((s) => s.products)
+  const allProducts = useStudio((s) => s.products)
+  // retired pieces stay loaded for old designs but are not offered any more
+  const products = useMemo(() => allProducts.filter((p) => p.active !== false), [allProducts])
   const items = useStudio((s) => s.items)
   const productMap = useStudio((s) => s.productMap)
   const dragging = useStudio((s) => s.draggingUid === 'new')

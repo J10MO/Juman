@@ -53,7 +53,7 @@ export default function StudioPage() {
   const navigate = useNavigate()
   const { user, ready } = useAuth()
   const toast = useToast()
-  const products = useApi('/products')
+  const products = useApi('/products?all=1')
   const productsReady = useStudio((s) => s.products.length > 0)
   const itemCount = useStudio((s) => s.items.length)
   const dragNew = useStudio((s) => s.draggingUid === 'new')
